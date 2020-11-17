@@ -78,8 +78,8 @@ bool Board::is_above_ground()
 	// checks if there is ground below, which is '#' char in our case
 	if (m_vector_of_strings[location_player.row + 1]
 						   [location_player.col] == '#')
-		return true; // (int) = 1
+		return true; // = 1
 	
-	return false; // (int) = 0
+	return false; // = 0
 }
 
