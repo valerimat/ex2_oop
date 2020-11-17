@@ -1,0 +1,9 @@
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/CMakeFiles/oop1_ex02.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/include/CMakeFiles/edit_cache.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/include/CMakeFiles/rebuild_cache.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/src/CMakeFiles/edit_cache.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/src/CMakeFiles/rebuild_cache.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/resources/CMakeFiles/edit_cache.dir
+C:/Users/valeri/Desktop/oop/ex2/ex2_main/out/build/x64-Debug/resources/CMakeFiles/rebuild_cache.dir

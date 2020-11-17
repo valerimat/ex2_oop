@@ -1,10 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
 #include "Board.h"
-#include "Location.h"
-
 
 Board::Board()
 {
@@ -83,3 +77,14 @@ bool Board::is_above_ground()
 	return false; // = 0
 }
 
+// right now it is not fully right, but serves its purpose 
+void Board::delete_char(Location& location)
+{
+	m_vector_of_strings[location.row][location.col] = ' ';
+}
+
+
+void Board::add_char(Location& location, char sign)
+{
+	m_vector_of_strings[location.row][location.col] = sign;
+}
