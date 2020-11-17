@@ -1,2 +1,6 @@
 ﻿target_sources (oop1_ex02 PRIVATE "main.cpp"
-                                  "io.cpp")
+                                  "io.cpp"
+                                   "Board.cpp"
+                                   "game_handler.cpp"
+                                   "Player.cpp"
+                                   "Location.cpp")

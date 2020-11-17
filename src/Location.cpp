@@ -1,8 +1,15 @@
 #pragma once
+#include "Location.h"
 
-struct Location
+
+void  Location::update_based_on_key(int key)
 {
-    explicit Location(int row, int col) : row(row), col(col) {}
-    int row;
-    int col;
-};
+    if (key == 119) // up
+        row--;
+    if (key == 115) // down
+        row++;
+    if (key == 97) // left
+        col--;
+    if (key == 100) // right
+        col++;
+}
