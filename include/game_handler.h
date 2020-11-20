@@ -3,6 +3,9 @@
 #include "io.h"
 #include <iostream>	
 #include "Location.h"
+#include <vector>
+#include "Coin.h"
+#include "Monster.h"
 
 enum nextStep {
 	Wall,
@@ -35,6 +38,12 @@ public:
 	void init_player(Board&);
 	void move_player(int key);
 	void print_player_location();
+
+	//TESTING
+
+	std::vector<Monster> m_monsters;
+	std::vector<Coins> m_coins;
+
 	/*
 	
 	

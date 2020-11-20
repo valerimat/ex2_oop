@@ -4,8 +4,9 @@
 
 class Score {
 
+public:
 	Score(int score);
- ~Score() = default;
+	~Score() = default;
 	void increase(int value);
 	int get_score();
 
