@@ -3,4 +3,8 @@
                                    "Board.cpp"
                                    "game_handler.cpp"
                                    "Player.cpp"
-                                   "Location.cpp")
+                                   "Score.cpp"
+                                   "Lives.cpp"
+                                   "Location.cpp"
+                                   "Coin.cpp"
+                                   "Monster.cpp")

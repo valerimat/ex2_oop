@@ -1,4 +1,8 @@
 #include "Board.h"
+const char enemy = '%';
+const char coin = '*';
+const char player = '@';
+
 
 Board::Board()
 {
@@ -27,25 +31,45 @@ Board::Board()
 }
 
 // gets the location of the player according to '@' char
-Location Board::get_location_of_player()
+void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  & coins, Location & playerLocation)
 {
 	Location location(-1, -1); //default size in order to use it
+	Coins new_coin(location);
+	Monster new_monster(location);
 
 	for (int i = 0; i < m_vector_of_strings.size(); i++)
 	{
 		for (int j = 0; j < m_vector_of_strings[i].size(); j++)
 		{
-			if (m_vector_of_strings[i][j] == '@')
+			switch (m_vector_of_strings[i][j])
 			{
+
+			case player:
 				location.row = i;
 				location.col = j;
+				playerLocation = location;
 
-				return location;
+				
+			case coin:
+				location.row = i;
+				location.col = j;
+				new_coin.relocate(location);
+				coins.push_back(new_coin);
+
+				
+
+			case enemy:
+				location.row = i;
+				location.col = j;
+				new_monster.relocate(location);
+				monsters.push_back(new_monster);
+				
 			}
 		}
 	}
-	return location;
 }
+
+
 
 // prints the board
 void Board::print_board()
@@ -65,7 +89,7 @@ int Board::get_width()
 {
 	return m_vector_of_strings[0].size();
 }
-
+/*
 bool Board::is_above_ground()
 {	
 	Location location_player = this->get_location_of_player();
@@ -76,7 +100,7 @@ bool Board::is_above_ground()
 	
 	return false; // = 0
 }
-
+*/
 // right now it is not fully right, but serves its purpose 
 void Board::delete_char(Location& location)
 {

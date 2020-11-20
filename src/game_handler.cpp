@@ -2,11 +2,14 @@
 
 
 Game_Handler::Game_Handler(Board& board)
-	:m_board(board),
-	 m_player(Location(0,0)) //default constructor
+	:m_board(board)
 {
-	init_player(board);
-	// floor poll etc...
+	Location player_location(0, 0);
+
+	board.get_locations(m_monsters, m_coins, player_location);
+
+	m_player.set_loctaion(player_location);
+
 }
 
 // runs the game
@@ -15,12 +18,14 @@ void Game_Handler::Run_game() {
 
 	int key; //  right now it will be W,A,S,D key
 
+
+
 	while (1) {
 		//loads the level
 		m_board.print_board ();
 		
 
-		print_player_location();
+		
 
 		//fix to work with W,A,S,D
 		int key = Keyboard::getch();
@@ -41,10 +46,7 @@ void Game_Handler::movement(int key) {
 	move_player(key); 
 }
 
-void Game_Handler::init_player(Board& board) {
-	Location playerLocation = board.get_location_of_player();
-	m_player = Player(playerLocation);
-}
+
 
 void Game_Handler::print_player_location()
 {
@@ -73,8 +75,10 @@ void Game_Handler::move_player(int key)
 switch(next)
 	case Wall:
 		// no move -> enemies move
+		break
 	case Coin:
 		// delete coin up score
+		break
 	case Enemy:
 		// down life reset position
 	case Pole:

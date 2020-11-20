@@ -2,11 +2,18 @@
 
 
 
-Player::Player(Location loctaion) :m_player_loctaion(loctaion)
-//, m_player_score(0), m_player_lives(3)
+Player::Player(Location loctaion)
+    :m_player_loctaion(loctaion),
+     m_player_score(Score(0)),
+     m_player_lives(Lives(3))
 { };
 
-
+//default constructor
+Player::Player() 
+    :m_player_loctaion(Location(0, 0)),
+    m_player_score(Score(0)),
+    m_player_lives(Lives(3))
+    {  };
 
 Location Player::get_location() {
     return m_player_loctaion;
@@ -15,7 +22,7 @@ Location Player::get_location() {
 void Player::set_loctaion(Location& new_location) {
     m_player_loctaion = new_location;
 };
-/*
+
 
 void Player::increse_score(int value) {
     m_player_score.increase(value);
@@ -58,4 +65,3 @@ void Player::set_score(int score) {
     m_player_score = Score(score);
 
 }
-*/
