@@ -1,4 +1,4 @@
-#include "game_handler.h"
+#include "Game_handler.h"
 
 
 Game_Handler::Game_Handler(Board& board)

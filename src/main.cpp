@@ -2,7 +2,7 @@
 #include <cstdlib> // for std::system()
 #include "io.h"
 #include "Board.h"
-#include "game_handler.h"
+#include "Game_handler.h"
 
 
 int main()
