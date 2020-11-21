@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/valer/Desktop/oop/ex2_oop
+# Install script for directory: D:/OOP/ex2/ex2_oop
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/valer/Desktop/oop/ex2_oop/out/install/x64-Debug (default)")
+  set(CMAKE_INSTALL_PREFIX "D:/OOP/ex2/ex2_oop/out/install/x64-Debug (default)")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,17 +34,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/valer/Desktop/oop/ex2_oop/out/build/x64-Debug (default)/include/cmake_install.cmake")
+  include("D:/OOP/ex2/ex2_oop/out/build/x64-Debug (default)/include/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/valer/Desktop/oop/ex2_oop/out/build/x64-Debug (default)/src/cmake_install.cmake")
+  include("D:/OOP/ex2/ex2_oop/out/build/x64-Debug (default)/src/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/valer/Desktop/oop/ex2_oop/out/build/x64-Debug (default)/resources/cmake_install.cmake")
+  include("D:/OOP/ex2/ex2_oop/out/build/x64-Debug (default)/resources/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -55,5 +55,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/valer/Desktop/oop/ex2_oop/out/build/x64-Debug (default)/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/OOP/ex2/ex2_oop/out/build/x64-Debug (default)/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
