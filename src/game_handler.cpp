@@ -12,6 +12,7 @@ Game_Handler::Game_Handler(Board& board)
 
 }
 
+
 // runs the game
 // main function
 void Game_Handler::Run_game() {
@@ -26,7 +27,7 @@ void Game_Handler::Run_game() {
 		
 
 		
-
+		// fix
 		//fix to work with W,A,S,D
 		int key = Keyboard::getch();
 
@@ -37,6 +38,7 @@ void Game_Handler::Run_game() {
 		system("CLS");
 
 		//if player dead => exit
+
 		//if  collected all coins => next level
 
 	}
