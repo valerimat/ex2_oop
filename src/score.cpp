@@ -1,4 +1,3 @@
-
 #include "Score.h"
 
 Score::Score(int score) : m_score(score) {};
