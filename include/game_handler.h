@@ -1,9 +1,9 @@
+#include <iostream>
+#include <vector>
 #include "Board.h"
 #include "player.h"
 #include "io.h"
-#include <iostream>	
 #include "Location.h"
-#include <vector>
 #include "Coin.h"
 #include "Monster.h"
 
@@ -31,11 +31,11 @@ public:
 
 	Board m_board;
 	void movement(int key);
+	enum nextStep what_is_there_ahead(int key);
 
 	//private ??
 	void Run_game();
 	Player m_player;
-	void init_player(Board&);
 	void move_player(int key);
 	void print_player_location();
 

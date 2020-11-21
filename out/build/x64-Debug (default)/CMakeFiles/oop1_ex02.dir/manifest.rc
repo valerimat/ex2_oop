@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "D:/OOP/ex2/ex2_oop/out/build/x64-Debug (default)/CMakeFiles/oop1_ex02.dir/embed.manifest"
