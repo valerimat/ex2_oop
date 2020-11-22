@@ -7,6 +7,4 @@
                                    "Lives.cpp"
                                    "Location.cpp"
                                    "Coin.cpp"
-                                   "Monster.cpp"
-                                   "Tile.cpp"
-                                   "AlphaStar.cpp")
+                                   "Monster.cpp")                             

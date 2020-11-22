@@ -16,7 +16,7 @@ public:
 
 	int get_height();
 	int get_width();
-	char get_char(Location location);
+
 
 	void print_board();
 	void delete_char(Location &);

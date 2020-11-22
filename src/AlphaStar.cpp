@@ -272,3 +272,5 @@ std::vector <int> make_path(std::vector < Tile> closed, Tile to) {
 	}
 		return path;
 }
+
+*/
