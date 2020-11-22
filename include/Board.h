@@ -22,6 +22,8 @@ public:
 	void delete_char(Location &);
 	void add_char(Location &, char);
 
+	//returns char based on wanted location
+	char get_char(Location& location);
 	//bool is_above_ground();
 
 	
