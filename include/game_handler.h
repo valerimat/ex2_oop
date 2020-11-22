@@ -6,6 +6,8 @@
 #include "Location.h"
 #include "Coin.h"
 #include "Monster.h"
+#include "AlphaStar.h"
+#include "macros.h"
 
 enum nextStep {
 	Wall,
@@ -17,12 +19,6 @@ enum nextStep {
 	Ladder
 };
 
-enum key {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
 
 
 class Game_Handler {
@@ -38,11 +34,14 @@ public:
 	Player m_player;
 	void move_player(int key);
 	void print_player_location();
-
-	//TESTING
+	
+	//debug functions
+	void check_path();
 
 	std::vector<Monster> m_monsters;
 	std::vector<Coins> m_coins;
+
+
 
 	/*
 	
