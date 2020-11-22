@@ -102,6 +102,12 @@ bool Board::is_above_ground()
 }
 */
 // right now it is not fully right, but serves its purpose 
+
+//returns which char there is an a specific location
+char Board::get_char(Location& location) {
+	return m_vector_of_strings[location.row][location.col];
+}
+
 void Board::delete_char(Location& location)
 {
 	m_vector_of_strings[location.row][location.col] = ' ';
