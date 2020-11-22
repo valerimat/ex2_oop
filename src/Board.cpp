@@ -69,10 +69,7 @@ void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  &
 	}
 }
 
-char Board::get_char(Location location)
-{
-	return m_vector_of_strings[location.row][location.col];
-}
+
 
 // prints the board
 void Board::print_board()
