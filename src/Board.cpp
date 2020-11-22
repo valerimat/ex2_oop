@@ -24,11 +24,50 @@ Board::Board()
 
 		// Line contains string of length > 0 then save it in vector
 		if (str.size() > 0)
+		{
 			m_vector_of_strings.push_back(str);
+			m_clean_vector_of_strings.push_back(str);
+		}
+			
 	}
 	// Read the next line from File untill it reaches empty row.
 	while (str.size() > 0);
+
+	for (int i = 0; i < m_vector_of_strings.size(); i++)
+	{
+		
+		for (int j = 0; j < m_vector_of_strings[i].size(); j++)
+		{
+			if (m_vector_of_strings[i][j] == '@' ||
+				m_vector_of_strings[i][j] == '%' ||
+				m_vector_of_strings[i][j] == '*')
+
+				m_clean_vector_of_strings[i][j] = ' ';
+		}
+	}
 }
+
+/*
+std::vector<std::string> Board::get_clean_board()
+{
+	std::vector<std::string> clean_vector_of_strings;
+
+	for (int i = 0; i < m_vector_of_strings.size(); i++)
+	{
+		for (int j = 0; j < m_vector_of_strings[i].size(); j++)
+		{
+			if (m_vector_of_strings[i][j] == '@' ||
+				m_vector_of_strings[i][j] == '%' ||
+				m_vector_of_strings[i][j] == '*')
+
+				clean_vector_of_strings[i][j] = ' ';
+			else
+				clean_vector_of_strings[i][j] = m_vector_of_strings[i][j];
+		}
+	}
+	return clean_vector_of_strings;
+}
+*/
 
 // gets the location of the player according to '@' char
 void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  & coins, Location & playerLocation)
@@ -69,8 +108,6 @@ void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  &
 	}
 }
 
-
-
 // prints the board
 void Board::print_board()
 {
@@ -89,23 +126,25 @@ int Board::get_width()
 {
 	return m_vector_of_strings[0].size();
 }
-/*
-bool Board::is_above_ground()
-{	
-	Location location_player = this->get_location_of_player();
-	// checks if there is ground below, which is '#' char in our case
-	if (m_vector_of_strings[location_player.row + 1]
-						   [location_player.col] == '#')
-		return true; // = 1
-	
-	return false; // = 0
-}
-*/
-// right now it is not fully right, but serves its purpose 
 
 //returns which char there is an a specific location
 char Board::get_char(Location& location) {
 	return m_vector_of_strings[location.row][location.col];
+}
+
+char Board::get_char(int row, int col) 
+{
+	return m_vector_of_strings[row][col];
+}
+
+char Board::get_clean_board_char(int row, int col)
+{
+	return m_clean_vector_of_strings[row][col];
+}
+
+void Board::replace_char(Location &location)
+{
+	m_vector_of_strings[location.row][location.col] = m_clean_vector_of_strings[location.row][location.col];
 }
 
 void Board::delete_char(Location& location)

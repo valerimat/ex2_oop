@@ -19,12 +19,16 @@ void Game_Handler::Run_game()
 {
 
 	int key; //  right now it will be W,A,S,D key
+	int score = 0;
 
 	while (1)
 	{
+		std::cout << "         LEVEL - X\n";
 		//loads the level
 		m_board.print_board ();
-		
+
+		std::cout << "     health - X , score - Y\n";
+
 		//fix to work with W,A,S,D
 		int key = Keyboard::getch();
 
@@ -46,62 +50,72 @@ void Game_Handler::movement(int key) {
 }
 
 void Game_Handler::move_player(int key)
-{
-	Location current_location = m_player.get_location(); // lets us hold the axis, where the player stands
+{	
 	enum nextStep next = what_is_there_ahead(key);
+	Location current_location = m_player.get_location(); // lets us hold the axis, where the player stands
 
-	switch (next)
+	if (m_board.get_char(current_location.row + 1, current_location.col) != ' ' ||
+		m_board.get_clean_board_char(current_location.row, current_location.col) == '-')
 	{
+		switch (next)
+		{
 		case Wall: // #
 			// no move, but enemies move
 			m_board.add_char(current_location, '@');
 			// enemy moves;
 			break;
 		case Ladder: // H
-			if(key == 119 || key == 115)
-				m_board.add_char(current_location, 'H'); // needs to be fixed later
-			else
-				m_board.delete_char(current_location); // needs to be fixed later
-			current_location.update_based_on_key(key);
+			m_board.replace_char(current_location); // inserts the original char back to place
+			current_location.update_based_on_key(key); // we get the new location based on the key
 			m_player.set_loctaion(current_location);
 			m_board.add_char(current_location, '@');
 			break;
-				
+
 		case Pole: // - 
-			if (key == 97 || key == 100)
-				m_board.add_char(current_location, '-'); // needs to be fixed later
+			if (key == 119)
+			{
+				m_board.add_char(current_location, '@');
+				// enemy moves;
+			}
 			else
-				m_board.delete_char(current_location); // needs to be fixed later
-			m_board.delete_char(current_location); // needs to be fixed later
-			current_location.update_based_on_key(key);
-			m_player.set_loctaion(current_location);
-			m_board.add_char(current_location, '@');
+			{
+				m_board.replace_char(current_location); // inserts the original char back to place
+				current_location.update_based_on_key(key); // we get the new location based on the key
+				m_player.set_loctaion(current_location);
+				m_board.add_char(current_location, '@');
+			}
 			break;
 			// enemy moves;
 		case Coin: // *
 			// add it later
 		case Enemy: // %
 			// add it later
-		case NoGround: // Hell
-			m_board.delete_char(current_location); // needs to be fixed later
-			current_location.update_based_on_key(115); // 115 is down in the KB
-			m_player.set_loctaion(current_location);
-			m_board.add_char(current_location, '@');
-			break;
-		default: // Ground - #
-			m_board.delete_char(current_location); // needs to be fixed later
+		default: // Ground
 			if (key == 119)
 			{
 				m_board.add_char(current_location, '@');
-			// enemy moves;
+				// enemy moves;
 			}
 			else
 			{
-				current_location.update_based_on_key(key); // 115 is down in the KB
+				m_board.replace_char(current_location); // inserts the original char back to place
+				current_location.update_based_on_key(key); // we get the new location based on the key
 				m_player.set_loctaion(current_location);
 				m_board.add_char(current_location, '@');
 			}
 			break;
+		}
+	}
+	else
+	{
+		// free fall
+		while (m_board.get_char(current_location.row + 1, current_location.col) == ' ')
+		{
+			m_board.replace_char(current_location); // inserts the original char back to place
+			current_location.update_based_on_key(115); // 115 is down in the KB
+			m_player.set_loctaion(current_location);
+			m_board.add_char(current_location, '@');
+		}
 	}
 }
 

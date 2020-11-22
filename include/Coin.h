@@ -12,5 +12,4 @@ public:
 
 private:
 	Location m_loctaion;
-
 };
