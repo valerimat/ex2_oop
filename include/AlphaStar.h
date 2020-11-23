@@ -6,16 +6,41 @@
 #include "Board.h"
 #include <math.h>
 
+//==============================================================================
+//   ___     _    
+//  / _ \ /\| |/\ 
+// /_/ \ \  `  ' / 
+// |  _  |_     _|
+// | | | |/ , . \ 
+// \_| |_/\/|_|\/
+//==============================================================================
 
-std::vector<int> CalculatePath(Location& from, Location& to, int ranking,  Board& board);
-void get_around(const Tile& curr_tile, std::vector<Tile> &  arround, const std::vector<Tile> closed_list, Board& board, int idex_of_father);
-bool check_validity(Tile curr_tile, const std::vector<Tile> closed_list, bool y_axis);
-void calculate_score( std::vector<Tile> & arround, const Location& to, int h_score);
-int calculate_g_value(const Location& from, const Location& to);
-int check_if_tile_in_open(Tile tile, const std::vector<Tile> open_list);
-int find_the_best_score(std::vector<Tile> openlist);
-int ending_tile_in_open(const std::vector<Tile> open_list, Tile end_tile);
-std::vector <int> make_path(std::vector < Tile> closed, Tile to);
+/*
+Algorithm for calcluating shortest path for monsters
+*/
+
+// send locations and your board
+std::vector<int> CalculatePath(Location& from, Location& to, Board& board);
+
+
+
+//helper functions - for full documentation visit cpp
+void get_around(const Tile& ,std::vector<Tile>& ,const std::vector<Tile>, Board&, int );
+
+bool check_validity(Tile, std::vector<Tile>,Board& , enum Moves );
+
+void calculate_score(std::vector<Tile>& ,const Location& ,int );
+
+int calculate_g_value(const Location& ,const Location& );
+
+int check_if_tile_in_vector(Tile ,const std::vector<Tile> );
+
+int find_the_best_score(std::vector<Tile> );
+
+
+std::vector <int> make_path(std::vector<Tile> , Tile );
+
+
 
 
 

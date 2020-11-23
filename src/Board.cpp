@@ -113,14 +113,14 @@ void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  &
 				location.row = i;
 				location.col = j;
 				playerLocation = location;
-
+				break;
 				
 			case coin:
 				location.row = i;
 				location.col = j;
 				new_coin.relocate(location);
 				coins.push_back(new_coin);
-
+				break;
 				
 
 			case enemy:
@@ -128,7 +128,7 @@ void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  &
 				location.col = j;
 				new_monster.relocate(location);
 				monsters.push_back(new_monster);
-				
+				break;
 			}
 		}
 	}
@@ -160,7 +160,7 @@ int Board::get_width()
 }
 
 //returns which char there is an a specific location
-char Board::get_char(Location& location) {
+char Board::get_char(Location location) const {
 	return m_vector_of_strings[location.row][location.col];
 }
 
@@ -184,7 +184,7 @@ void Board::delete_char(Location& location)
 	m_vector_of_strings[location.row][location.col] = ' ';
 }
 
-void Board::add_char(Location& location, char sign)
+void Board::add_char(Location location, char sign)
 {
 	m_vector_of_strings[location.row][location.col] = sign;
 }
