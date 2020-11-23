@@ -47,27 +47,53 @@ Board::Board()
 	}
 }
 
-/*
-std::vector<std::string> Board::get_clean_board()
+void Board::load_next_level(Board &board, int level)
 {
-	std::vector<std::string> clean_vector_of_strings;
+	std::string   str; // temporary string which we push into the vector;
+	std::ifstream file;
 
-	for (int i = 0; i < m_vector_of_strings.size(); i++)
+	file.open("Board.txt"); // Board.txt has the all levels 
+
+	if (!file)
 	{
-		for (int j = 0; j < m_vector_of_strings[i].size(); j++)
-		{
-			if (m_vector_of_strings[i][j] == '@' ||
-				m_vector_of_strings[i][j] == '%' ||
-				m_vector_of_strings[i][j] == '*')
+		std::cout << "File didn't open\n";
+		exit(EXIT_FAILURE);
+	}
 
-				clean_vector_of_strings[i][j] = ' ';
-			else
-				clean_vector_of_strings[i][j] = m_vector_of_strings[i][j];
+	for (int i = 0; i < level; i++)
+	{
+		clear_board();
+
+		do
+		{
+			//reads each line from the Board.txt
+			getline(file, str);
+
+			// Line contains string of length > 0 then save it in vector
+			if (str.size() > 0)
+			{
+				m_vector_of_strings.push_back(str);
+				m_clean_vector_of_strings.push_back(str);
+			}
+
+		}
+		// Read the next line from File untill it reaches empty row.
+		while (str.size() > 0);
+
+		for (int i = 0; i < m_vector_of_strings.size(); i++)
+		{
+
+			for (int j = 0; j < m_vector_of_strings[i].size(); j++)
+			{
+				if (m_vector_of_strings[i][j] == '@' ||
+					m_vector_of_strings[i][j] == '%' ||
+					m_vector_of_strings[i][j] == '*')
+
+					m_clean_vector_of_strings[i][j] = ' ';
+			}
 		}
 	}
-	return clean_vector_of_strings;
 }
-*/
 
 // gets the location of the player according to '@' char
 void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  & coins, Location & playerLocation)
@@ -115,6 +141,12 @@ void Board::print_board()
 		std::cout << m_vector_of_strings[i] << std::endl;
 }
 
+void Board::print_board2()
+{
+	for (int i = 0; i < m_clean_vector_of_strings.size(); i++)
+		std::cout << m_clean_vector_of_strings[i] << std::endl;
+}
+
 // gets height
 int Board::get_height()
 {
@@ -152,8 +184,19 @@ void Board::delete_char(Location& location)
 	m_vector_of_strings[location.row][location.col] = ' ';
 }
 
-
 void Board::add_char(Location location, char sign)
 {
 	m_vector_of_strings[location.row][location.col] = sign;
+}
+
+void Board::clear_board()
+{
+	for (int i = 0; i < m_vector_of_strings.size(); i++)
+	{
+		m_vector_of_strings[i].clear();
+		m_clean_vector_of_strings[i].clear();
+	}
+
+	m_vector_of_strings.clear();
+	m_clean_vector_of_strings.clear();
 }

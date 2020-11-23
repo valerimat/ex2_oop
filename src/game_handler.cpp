@@ -22,6 +22,8 @@ void Game_Handler::Run_game()
   
 	int score = 0;
 
+	m_board.load_next_level(m_board, 2);
+
 	while (1)
 	{
 		std::cout << "         LEVEL - X\n";
