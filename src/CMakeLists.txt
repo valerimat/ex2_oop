@@ -1,10 +1,17 @@
-﻿target_sources (oop1_ex02 PRIVATE  "main.cpp"
-                                   "io.cpp"
+﻿target_sources (oop1_ex02 PRIVATE  "AlphaStar.cpp"
                                    "Board.cpp"
-                                   "game_handler.cpp"
-                                   "Player.cpp"
-                                   "Score.cpp"
+                                   "Coin.cpp"
+                                   "Game_handler.cpp"
+                                   "io.cpp"
                                    "Lives.cpp"
                                    "Location.cpp"
-                                   "Coin.cpp"
-                                   "Monster.cpp")                             
+                                   "Macros.cpp"
+                                   "main.cpp"
+                                   "Monster.cpp" 
+                                   "Player.cpp"
+                                   "Score.cpp"
+                                   "Tile.cpp"
+                                  )
+                                   
+                                   
+                                       

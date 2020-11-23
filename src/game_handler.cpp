@@ -12,6 +12,14 @@ Game_Handler::Game_Handler(Board& board)
 
 }
 
+void Game_Handler::check_path() {
+		
+	Location from(3, 3);
+	Location to(9, 9);
+	std::vector<int> path = CalculatePath(from, to, 0, m_board);
+
+
+}
 
 // runs the game
 // main function
@@ -19,6 +27,7 @@ void Game_Handler::Run_game()
 {
 
 	int key; //  right now it will be W,A,S,D key
+  
 	int score = 0;
 
 	while (1)
