@@ -12,13 +12,18 @@ class Board
 {
 public:
 	Board(); // constructor
+
+	void load_next_level(Board &board, int level);
+
 	void get_locations(std::vector<Monster> & , std::vector<Coins> &, Location& ); // gets the location of the hero on the map
 
 	int get_height();
 	int get_width();
 
+	void clear_board();
 
 	void print_board();
+	void print_board2();
 	void replace_char(Location &location);
 	void delete_char(Location &);
 	void add_char(Location &, char);
