@@ -34,9 +34,11 @@ public:
 	Player m_player;
 	void move_player(int key);
 	void print_player_location();
-	
+	void move_enemies();
 	//debug functions
-	void check_path();
+
+
+	void move_based_on_dirrection(int dirrection, Monster& monster);
 
 	std::vector<Monster> m_monsters;
 	std::vector<Coins> m_coins;

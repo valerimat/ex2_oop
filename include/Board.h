@@ -21,10 +21,10 @@ public:
 	void print_board();
 	void replace_char(Location &location);
 	void delete_char(Location &);
-	void add_char(Location &, char);
+	void add_char(Location , char);
 
 	//returns char based on wanted location
-	char get_char(Location& location);
+	char get_char(Location location) const;
 	char get_char(int row, int col);
 	char get_clean_board_char(int row, int col);
 	std::vector<std::string> get_clean_board();

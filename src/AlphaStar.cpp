@@ -1,10 +1,21 @@
 #include "AlphaStar.h"
 
 
+//====================================================================================
+//This function
+//Input:
+//Output:
+std::vector<int> CalculatePath(Location & from,
+							   Location & to,
+							   Board & board)
+{
 
-std::vector<int> CalculatePath(Location & from, Location & to, int ranking,  Board & board) {
-
-
+	//if we are in player location 
+	if (from == to) {
+		std::vector<int> path(1);
+		path[0] = NONE;
+		return path;
+ 	}
 
 	// will store open list of tiles
 	std::vector<Tile> open_list;
@@ -54,13 +65,13 @@ std::vector<int> CalculatePath(Location & from, Location & to, int ranking,  Boa
 		open_list.erase(tile_to_add);
 
 		//gets all posible tiles around
-		get_around(*(closed_list.end()-1), arround, closed_list,board, index_of_father);
+		get_around(*(closed_list.end()-1), arround, closed_list,board, closed_list.size()-1);
 
 		//calculates theyr score
 		calculate_score(arround, to_where.m_location, h_score);
 
 		
-		board.add_char((*(closed_list.end() - 1)).m_location, '@');
+		
 		
 
 
@@ -71,7 +82,7 @@ std::vector<int> CalculatePath(Location & from, Location & to, int ranking,  Boa
 		while (index < arround.size()) {
 
 			//check if they are in open
-			tile_in_open = check_if_tile_in_open(arround[index], open_list);
+			tile_in_open = check_if_tile_in_vector(arround[index], open_list);
 
 			//if there is no such tile
 			if (tile_in_open == -1)
@@ -87,7 +98,7 @@ std::vector<int> CalculatePath(Location & from, Location & to, int ranking,  Boa
 		}
 		
 		
-		int ending_tile = ending_tile_in_open(open_list, to_where);
+		int ending_tile = check_if_tile_in_vector( to_where, open_list);
 		if (ending_tile > -1) {
 			closed_list.push_back(open_list[ending_tile]);
 			break;
@@ -103,9 +114,16 @@ std::vector<int> CalculatePath(Location & from, Location & to, int ranking,  Boa
 	return path;
 }
 
-
-
-void get_around(const Tile & curr_tile, std::vector<Tile> & arround, const std::vector<Tile> closed_list, Board& board, int idex_of_father) {
+//====================================================================================
+//This function
+//Input:
+//Output:
+void get_around(const Tile & curr_tile,
+	            std::vector<Tile> & arround,
+				const std::vector<Tile> closed_list,
+				Board& board,
+				int idex_of_father)
+{
 
 	Location curr_location = curr_tile.m_location;
 	//getting all 
@@ -120,10 +138,8 @@ void get_around(const Tile & curr_tile, std::vector<Tile> & arround, const std::
 		 left = board.get_char(left_l),
 		 bottom = board.get_char(below);
 
-	
-	bool y_axis = true,
-	     x_axis = false;
-	
+	bool flag_top, flag_bottom, flag_left, flag_right;
+
 
 	arround.push_back(Tile(above, top, idex_of_father, (enum Moves)UP,closed_list[idex_of_father].h_value+1));
 	arround.push_back(Tile(below, bottom, idex_of_father, (enum Moves)DOWN, closed_list[idex_of_father].h_value + 1));
@@ -132,38 +148,112 @@ void get_around(const Tile & curr_tile, std::vector<Tile> & arround, const std::
 
 	int size = arround.size();
 
-	for (int index = 0; index < size; ++index) {
+	//can add while and indexing 
+	if (!check_validity(arround[3], closed_list, board, LEFT))
+		arround.erase(arround.begin() + 3);
+	if (!check_validity(arround[2], closed_list, board, RIGHT))
+		arround.erase(arround.begin() + 2);
+	if (!check_validity(arround[1], closed_list, board, DOWN))
+		arround.erase(arround.begin() + 1);
+	if (!check_validity(arround[0], closed_list, board, UP))
+		arround.erase(arround.begin() + 0);
+	
+	
+		
+	
 
-		//if its y axis
-		///if (index < 2)
-			if (!check_validity(arround[index], closed_list, x_axis))
-				 arround.erase(arround.begin() + index);
-
-		///else
-			//if(!check_validity(arround[index], closed_list, x_axis))
-				////arround.erase(arround.begin()+ index);
-	}
 
 
 }
 
-
-bool check_validity(Tile curr_tile, std::vector<Tile> closed_list, bool y_axis) {
+//====================================================================================
+//This function
+//Input:
+//Output:
+bool check_validity(Tile curr_tile,
+					std::vector<Tile> closed_list,
+					Board & board,
+					enum Moves move)
+{
 	
+	int tile_in_closed = check_if_tile_in_vector(curr_tile,closed_list);
+	if (tile_in_closed != -1)
+		return false;
+
 	int size_of_list = closed_list.size();
 	int index = 0;
-
-	//checking our tile is not an unpassable object
-	if (curr_tile.m_value == '#') {
+	bool free_fall = false;
+	Location curr_location = curr_tile.m_location;
+	//if we are in a wall
+	if (curr_tile.m_value == '#')
 		return false;
+
+	char above = board.get_char(curr_location.row - 1, curr_location.col),
+		below = board.get_char(curr_location.row + 1, curr_location.col),
+		to_the_left = board.get_char(curr_location.row, curr_location.col - 1),
+		to_the_right = board.get_char(curr_location.row, curr_location.col + 1);
+	
+	if (curr_tile.m_value == '@')
+		return true;
+
+	switch (move) {
+		case LEFT:
+			//if there is wall to the  left
+			if (to_the_left == '#')
+				return false;
+			//if he is falling
+			else if (below == ' ' || below == 'H') {
+				if (to_the_left == '-'|| to_the_left == '@' || to_the_left == '%')
+					return true;
+				else
+					return  false;
+			}
+			return true;
+			break;
+
+		case RIGHT:
+			//if there is wall  to the right
+			if (to_the_right == '#')
+				return false;
+			//if he is falling
+			else if (below == ' ' || below == 'H') {
+				if (to_the_right == '-' || to_the_right == '@' || to_the_right == '%')
+					return true;
+				else
+					return  false;
+			}
+			return true;
+			break;
+
+		case UP:
+			//if there is wall above
+			if (above == 'H')
+				return true;
+			if (above == '@')
+				return true;
+			if (above == '%')
+				return true;
+			if (curr_tile.m_value == '@' && above == ' ')
+				return true;
+			if (curr_tile.m_value == '%' && above == ' ')
+				return true;
+			if (curr_tile.m_value == 'H' && above == ' ')
+				return true;
+			
+			return false;
+				
+			break;
+
+		case DOWN:
+			//if there is wall below
+			if (curr_tile.m_value == '-')
+				return false;
+
+			return true;
+			break;
 	}
 
-
-	//if its top bottom checkitng its ladder
-	if (y_axis)
-		if (curr_tile.m_value != 'H') {
-			return false;
-		}
+		
 			
 
 	//checking its not in the closed list
@@ -174,14 +264,19 @@ bool check_validity(Tile curr_tile, std::vector<Tile> closed_list, bool y_axis) 
 		++index;
 	}
 
+	//passed all checks
+
 	return true;
 
 }
 
-/*
-This function caclulates scores of given tile
-*/
-void calculate_score( std::vector<Tile> & arround, const Location & to, int h_score)
+//====================================================================================
+//This function
+//Input:
+//Output:
+void calculate_score(std::vector<Tile> & arround,
+					 const Location & to,
+					 int h_score)
 {
 	int size = arround.size();
 	int index = 0;
@@ -196,18 +291,20 @@ void calculate_score( std::vector<Tile> & arround, const Location & to, int h_sc
 }
 
 
-/*
-calculates g value based on manhattan algo
-*/
+//====================================================================================
+//This function
+//Input:
+//Output:
 int calculate_g_value(const Location& from, const Location& to)
 {
 	return abs((from.row - to.row)) + abs(from.col - to.col);
 }
 
-/*
-check if tile is in open list if yes returns index
-*/
-int check_if_tile_in_open(Tile tile,  std::vector<Tile> open_list) {
+//====================================================================================
+//This function
+//Input:
+//Output:
+int check_if_tile_in_vector(Tile tile,  std::vector<Tile> open_list) {
 
 	int size = open_list.size();
 
@@ -215,26 +312,35 @@ int check_if_tile_in_open(Tile tile,  std::vector<Tile> open_list) {
 
 	while (index < size) {
 
-		if (tile == open_list[index])
+		if (tile.m_location == open_list[index].m_location) {
+			index--;
 			return index;
+
+		}
+			
 
 		++index;
 	}
+
 	
 	return -1;
 
 }
 
+//====================================================================================
+//This function
+//Input:
+//Output:
 int find_the_best_score(std::vector<Tile> open_list) {
 	Tile new_tile;
-
-	new_tile = open_list[0];
+	int end_of_open = open_list.size();
+	new_tile = open_list[end_of_open -1];
 
 	int index = 0;
-	int tile_index = 0;
+	int tile_index = end_of_open-1;
 	int size = open_list.size();
 
-	while (index < size -1)
+	while (index < size )
 	{
 		if (new_tile.f_value > open_list[index].f_value) {
 			new_tile = open_list[index];
@@ -242,36 +348,18 @@ int find_the_best_score(std::vector<Tile> open_list) {
 		}
 		index++;
 	}
-	
-	open_list.erase(open_list.begin() + index);
+
+	index--;
 
 	return tile_index;
 
 }
 
 
-/*
-check if ending tile in open list
-*/
-int ending_tile_in_open( std::vector<Tile> open_list, Tile end_tile) {
-
-	int index = 0;
-	int size = open_list.size();
-
-	while (index < size) {
-		if (open_list[index].m_location == end_tile.m_location)
-			return index;
-		index++;
-	}
-
-	return -1;
-
-}
-
-
-/*
-
-*/
+//====================================================================================
+//This function
+//Input:
+//Output:
 std::vector <int> make_path(std::vector < Tile> closed, Tile to) {
 	int index = 0;
 	std::vector <int> path ;
@@ -280,10 +368,9 @@ std::vector <int> make_path(std::vector < Tile> closed, Tile to) {
 
 	while (closed[index_of_father].m_location != (*(closed.begin())).m_location) {
 
+		path.insert(path.begin(), closed[index_of_father].m_move);
+
 		index_of_father = closed[index_of_father].m_father;
-
-		path.insert( path.begin(), closed[index_of_father].m_move);
-
 
 	}
 		return path;
