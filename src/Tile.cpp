@@ -18,7 +18,7 @@ Tile::Tile() :
 	g_value(0),
 	h_value(0),
 	m_father(0),
-	m_move(UP)
+	m_move(NONE)
  {};
 
 
