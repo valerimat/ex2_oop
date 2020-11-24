@@ -2,7 +2,8 @@
 
 
 Game_Handler::Game_Handler(Board& board)
-	:m_board(board)
+	:m_board(board),
+	 m_level(1)
 {
 	Location player_location(0, 0);
 
@@ -18,19 +19,22 @@ Game_Handler::Game_Handler(Board& board)
 void Game_Handler::Run_game()
 {
 
+	bool end = false;
+
 	int key; //  right now it will be W,A,S,D key
   
 	int score = 0;
 
-	m_board.load_next_level(m_board, 2);
+	
 
 	while (1)
 	{
 		std::cout << "         LEVEL - X\n";
 		//loads the level
-		m_board.print_board ();
+		m_board.print_board();
 
-		std::cout << "     health - X , score - Y\n";
+	
+		std::cout << "     health - X , score - " << m_player.get_score();
 
 		//fix to work with W,A,S,D
 		int key = Keyboard::getch();
@@ -38,10 +42,22 @@ void Game_Handler::Run_game()
 		// add key is valid		
 		movement(key);
 
-		// clears the screen
+		//check if we collected all coins
+		end = no_coins();
+		if (end) {
+			system("CLS");
+			m_player.increse_score_end_level(m_level);
+			m_board.load_next_level(m_board, ++m_level);
+			
+			init_new_level();
+			continue;
+		}
+				//load_next
 
 		// move enemies
 		move_enemies();
+
+		// clears the screen
 
 		system("CLS");
 
@@ -93,8 +109,16 @@ void Game_Handler::move_player(int key)
 			}
 			break;
 			// enemy moves;
-		case Coin: // *
-			// add it later
+		case Coin:
+			m_board.replace_char(current_location); // inserts the original char back to place
+			current_location.update_based_on_key(key); // we get the new location based on the key
+			m_player.set_loctaion(current_location);
+			m_board.add_char(current_location, '@');
+			//update score
+			m_player.increse_score(m_level);
+			//delete from vector
+			delete_coin_from_vector(m_player.get_location());
+			break;
 		case Enemy: // %
 			// add it later
 		default: // Ground
@@ -190,7 +214,11 @@ void Game_Handler::move_enemies() {
 				//reset smartnes
 				m_monsters[index].reset_smartnes();
 			}
-			m_monsters[index].dec_smartnes();
+			else {
+				m_monsters[index].dec_smartnes();
+				continue;
+			}
+			
 
 			//can implement better with
 			int length_of_path = m_monsters[index].path.size();
@@ -252,5 +280,40 @@ void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster) {
 		break;
 
 	}
+
+}
+
+
+void Game_Handler::delete_coin_from_vector(Location  location) {
+
+	for (size_t index = 0; index < m_coins.size(); index++) {
+
+		if (m_coins[index].get_location() == location) {
+			m_coins.erase(m_coins.begin() + index);
+		}
+	}
+}
+
+
+
+
+
+
+bool Game_Handler::no_coins(){
+	if (m_coins.size() == 0)
+		return true;
+	
+return false;
+
+}
+
+void Game_Handler::init_new_level() {
+	Location player_location(0, 0);
+	m_monsters.clear();
+	m_coins.clear();
+
+	m_board.get_locations(m_monsters, m_coins, player_location);
+
+	m_player.set_loctaion(player_location);
 
 }

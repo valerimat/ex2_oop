@@ -36,7 +36,11 @@ public:
 	void print_player_location();
 	void move_enemies();
 	//debug functions
+	void delete_coin_from_vector(Location location);
+	bool no_coins();
+	void init_new_level();
 
+	int m_level;
 
 	void move_based_on_dirrection(int dirrection, Monster& monster);
 

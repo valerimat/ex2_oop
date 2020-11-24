@@ -188,6 +188,15 @@ bool check_validity(Tile curr_tile,
 	if (curr_tile.m_value == '#')
 		return false;
 
+	//checking its not in the closed list
+	while (index < size_of_list) {
+		if (curr_tile.m_location == closed_list[index].m_location) {
+			return false;
+		}
+		++index;
+	}
+
+
 	char above = board.get_char(curr_location.row - 1, curr_location.col),
 		below = board.get_char(curr_location.row + 1, curr_location.col),
 		to_the_left = board.get_char(curr_location.row, curr_location.col - 1),
@@ -203,10 +212,10 @@ bool check_validity(Tile curr_tile,
 				return false;
 			//if he is falling
 			else if (below == ' ' || below == 'H') {
-				if (to_the_left == '-'|| to_the_left == '@' || to_the_left == '%')
+				//if (to_the_left == '-'|| to_the_left == '@' || to_the_left == '%')
 					return true;
-				else
-					return  false;
+				//else
+					//return  false;
 			}
 			return true;
 			break;
@@ -217,10 +226,10 @@ bool check_validity(Tile curr_tile,
 				return false;
 			//if he is falling
 			else if (below == ' ' || below == 'H') {
-				if (to_the_right == '-' || to_the_right == '@' || to_the_right == '%')
+				//if (to_the_right == '-' || to_the_right == '@' || to_the_right == '%')
 					return true;
-				else
-					return  false;
+				//else
+					//return  false;
 			}
 			return true;
 			break;
@@ -233,11 +242,14 @@ bool check_validity(Tile curr_tile,
 				return true;
 			if (above == '%')
 				return true;
+
 			if (curr_tile.m_value == '@' && above == ' ')
 				return true;
 			if (curr_tile.m_value == '%' && above == ' ')
 				return true;
 			if (curr_tile.m_value == 'H' && above == ' ')
+				return true;
+			if (above == '#')
 				return true;
 			
 			return false;
@@ -256,13 +268,6 @@ bool check_validity(Tile curr_tile,
 		
 			
 
-	//checking its not in the closed list
-	while (index < size_of_list) {
-		if (curr_tile == closed_list[index]) {
-			return false;
-		}
-		++index;
-	}
 
 	//passed all checks
 

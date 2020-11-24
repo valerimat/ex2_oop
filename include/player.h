@@ -17,11 +17,12 @@ public:
 	
 	void increse_score(int value);
 	void decrese_live();
-	Score get_score();
+	int get_score();
 	Lives get_lives();
 	void reset(Location& starting_location);
 	void set_lives(int lives);
 	void set_score(int score);
+	void increse_score_end_level(int level);
 	
 private:
 

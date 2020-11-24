@@ -2,7 +2,7 @@
 
 
 
-Monster::Monster(Location& location) : m_location(location), m_smartnes(rand()%4) ,curr_smartnes(0)
+Monster::Monster(Location& location) : m_location(location), m_smartnes(rand()%10) ,curr_smartnes(0)
 {}; 
 	
 
