@@ -24,8 +24,12 @@ void Player::set_loctaion(Location& new_location) {
 };
 
 
-void Player::increse_score(int value) {
-    m_player_score.increase(value);
+void Player::increse_score(int level) {
+    m_player_score.increase(level);
+};
+
+void Player::increse_score_end_level(int level) {
+    m_player_score.level_end(level);
 };
 
 void Player::decrese_live() {
@@ -34,8 +38,8 @@ void Player::decrese_live() {
 
 
 //============================= Getters
-Score Player::get_score() {
-    return m_player_score;
+int Player::get_score() {
+    return m_player_score.get_score();
 };
 
 

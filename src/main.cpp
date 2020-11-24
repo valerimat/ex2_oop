@@ -8,7 +8,7 @@
 int main()
 {
   
-    Board board;
+    Board board;    
     Game_Handler game(board);
     game.Run_game();
     

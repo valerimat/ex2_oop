@@ -7,3 +7,8 @@ void Coins::relocate(Location& location)
 {
 	m_loctaion = location;
 }
+
+Location Coins::get_location() {
+	return m_loctaion;
+
+};
