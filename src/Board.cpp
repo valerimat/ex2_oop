@@ -113,7 +113,11 @@ void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  &
 		}
 	}
 }
+
 //----------------------------------------------------------------------------
+char Board::return_char_from_default(Location location) const {
+	return levels_backup[curr_level][location.row][location.col];
+}
 
 // gets height
 int Board::get_height()

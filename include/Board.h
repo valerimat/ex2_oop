@@ -29,6 +29,8 @@ public:
 	void clear_board();
 	void print_board();
 
+	
+
 	// level related functions
 	void load_next_level();
 	bool no_more_levels();
@@ -38,6 +40,7 @@ public:
 	void add_char(Location, char);
 	void replace_char(Location &location);
 	void delete_char(Location &);
+  char return_char_from_default(Location location) const;
 
 private:
 	int curr_level;

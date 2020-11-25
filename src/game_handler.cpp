@@ -29,14 +29,18 @@ void Game_Handler::Run_game()
 		//fix to work with W,A,S,D
 		int key = Keyboard::getch();
 
-		move_player(key); // player moves according to the key typed
+		//if wasnt a valid move		
+		if (!move_player(key)) {
+			system("CLS");
+			continue;
+		}
+			
 
 		//checks if all the coins were collected in the level
 		end = no_coins();
 		if (end) {
 
 			load_next_level();
-	
 			continue;
 		}
 			
@@ -50,7 +54,8 @@ void Game_Handler::Run_game()
 //----------------------------------------------------------------------------
 
 // main function where the player moves according to the all ifs
-void Game_Handler::move_player(int key)
+bool Game_Handler::move_player(int key)
+
 {	
 	enum nextStep next = what_is_there_ahead(key);
 	Location current_location = m_player.get_location(); // lets us hold the axis, where the player stands
@@ -58,10 +63,21 @@ void Game_Handler::move_player(int key)
 	if (m_board.get_char(current_location.row + 1, current_location.col) != ' ' ||
 		m_board.get_clean_board_char(current_location.row, current_location.col) == '-')
 	{
+		if(m_board.return_char_from_default(m_player.get_location()) == 'H')
+			if (key == 119) {
+				m_board.replace_char(current_location); // inserts the original char back to place
+				current_location.update_based_on_key(key); // we get the new location based on the key
+				m_player.set_loctaion(current_location);
+				m_board.add_char(current_location, '@');
+				return true;
+			}
+
 		switch (next)
 		{
 		case Wall: // #
 			m_board.add_char(current_location, '@');
+			return false;
+
 			break;
 
 		case Ladder: // H
@@ -97,7 +113,9 @@ void Game_Handler::move_player(int key)
 			break;
 
 		case Enemy: // %
-			die(); 
+
+			die();
+
 
 		default: // Ground
 			if (key == 119)
@@ -115,8 +133,10 @@ void Game_Handler::move_player(int key)
 		}
 	}
 	else
+
 	{
 		// free fall - nothing stops the player till he reaches ground beneath
+
 		while (m_board.get_char(current_location.row + 1, current_location.col) == ' ')
 		{
 			m_board.replace_char(current_location);		// inserts the original char back to place
@@ -125,6 +145,7 @@ void Game_Handler::move_player(int key)
 			m_board.add_char(current_location, '@');	// inserts the player in the tile
 		}
 	}
+	return true;
 }
 //----------------------------------------------------------------------------
 
@@ -229,7 +250,12 @@ void Game_Handler::move_enemies()
 			if(length_of_path == 0){
 				move_based_on_dirrection(NONE, m_monsters[index]);
 				continue;
+			}
 			
+			if (rand() % 8 == 1) {
+				random_move(m_monsters[index], m_monsters[index].path[0]);
+				m_monsters[index].path.erase(m_monsters[index].path.begin());
+				continue;
 			}
 				
 			move_based_on_dirrection(m_monsters[index].path[0] , m_monsters[index]);
@@ -239,6 +265,53 @@ void Game_Handler::move_enemies()
 
 };
 //----------------------------------------------------------------------------
+
+void Game_Handler::random_move(Monster& monster, int next_move) {
+	
+	Location monster_l = monster.get_location();
+
+	if(next_move == UP)
+		if(m_board.get_char(monster_l.row +1, monster_l.col) != '#')
+			move_based_on_dirrection(DOWN, monster);
+		else 
+			move_based_on_dirrection(rand()%2, monster);
+
+	else if (next_move == LEFT) {
+		if (m_board.get_char(monster_l.row + 1, monster_l.col) == 'H') {
+			if (rand() % 1 == 1)
+				move_based_on_dirrection(UP, monster);
+			else
+				move_based_on_dirrection(RIGHT, monster);
+		}
+		else {
+			if (m_board.get_char(monster_l.row, monster_l.col - 1) != '#')
+				move_based_on_dirrection(RIGHT, monster);
+			else
+				move_based_on_dirrection(LEFT, monster);
+		}
+	}
+
+	else if (next_move == RIGHT) {
+		if (m_board.get_char(monster_l.row + 1, monster_l.col) == 'H') {
+			if (rand() % 1 == 1)
+				move_based_on_dirrection(UP, monster);
+			else
+				move_based_on_dirrection(LEFT, monster);
+		}
+		else {
+			if (m_board.get_char(monster_l.row, monster_l.col + 1) != '#')
+				move_based_on_dirrection(LEFT, monster);
+			else
+				move_based_on_dirrection(RIGHT, monster);
+		}
+	}
+	else {
+		move_based_on_dirrection(next_move, monster);
+	}
+	
+}
+
+
 
 void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster)
 {
@@ -284,7 +357,12 @@ void Game_Handler::move_based_on_dirrection(bool x_axis, int direct, Monster & m
 	else
 		new_location = Location(monster.get_location().row + direct, monster.get_location().col );
 	
-	monster.set_deleted_it(m_board.get_char(new_location));
+char check_if_there_is_monster = there_is_a_monster(new_location);
+	
+	if(check_if_there_is_monster!= '\0')
+		monster.set_deleted_it(check_if_there_is_monster);
+	else
+		monster.set_deleted_it(m_board.get_char(new_location));
 
 	if (monster.get_deleted_it() == '@')
 		die();
@@ -306,6 +384,25 @@ void Game_Handler::delete_coin_from_vector(Location  location)
 	}
 }
 //----------------------------------------------------------------------------
+
+
+
+char Game_Handler::there_is_a_monster(Location & location) {
+	if (m_board.get_char(location) == '%') {
+		int index = 0;
+
+		while (m_monsters[index].get_location() != location)
+			index++;
+
+		return m_monsters[index].get_deleted_it();
+
+
+	}
+
+	return '\0';
+	
+}
+
 
 // loads the next level, if there are no more levels then the player won
 void Game_Handler::load_next_level()

@@ -200,18 +200,9 @@ bool check_validity(Tile curr_tile,
 	if (curr_tile.m_value == '#')
 		return false;
 
-	//checking its not in the closed list
-	/*
-	while (index < size_of_list) {
-		if (curr_tile.m_location == closed_list[index].m_location) {
-			return false;
-		}
-		++index;
-	}
-	*/
 
 	char below = board.get_char(curr_location.row + 1, curr_location.col);
-	
+	char above = board.get_char(curr_location.row -1, curr_location.col);
 	
 	
 
@@ -235,8 +226,9 @@ bool check_validity(Tile curr_tile,
 			break;
 
 		case UP:
-			if (curr_tile.m_value == 'H')
+			if (curr_tile.m_value == 'H' || (below == 'H' && curr_tile.m_value == ' ' ))
 				return true;
+
 			return false;
 			break;
 
@@ -362,7 +354,7 @@ std::vector <int> make_path(std::vector < Tile> closed, Tile to) {
 	if(closed.size() == 2)
 		path.insert(path.begin(), closed[1].m_move);
 
-	path.insert(path.begin(), closed[index_of_father].m_move);
+	//path.insert(path.begin(), closed[index_of_father].m_move);
 
 		return path;
 }

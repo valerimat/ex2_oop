@@ -1,13 +1,9 @@
 #pragma once
 
-//======const section======
-const int NUMBER_OF_LIVES = 3;
-
-//======include section======
 #include "Score.h"
 #include "Lives.h"
 #include "Location.h"
-
+#include "macros.h"
 
 class Player {
 
