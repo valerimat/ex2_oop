@@ -1,22 +1,23 @@
 //======include header======
 #include "player.h"
 
-// c_tor
+//===============C_tors===============
 Player::Player(Location loctaion)
     :m_player_loctaion(loctaion),
-     m_player_score(Score(0)),
-     m_player_lives(Lives(3))
+     m_player_score(Score(BASE_SCORE)),
+     m_player_lives(Lives(NUMBER_OF_LIVES))
 {};
 //----------------------------------------------------------------------------
 
 //default constructor
 Player::Player() 
     :m_player_loctaion(Location(0, 0)),
-     m_player_score(Score(0)),
-     m_player_lives(Lives(3))
+     m_player_score(Score(BASE_SCORE)),
+     m_player_lives(Lives(NUMBER_OF_LIVES))
 {};
 //----------------------------------------------------------------------------
 
+//===============Helpers===============
 // increases the score of the plauer
 void Player::increse_score(int level)
 {

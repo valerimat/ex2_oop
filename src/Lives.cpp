@@ -1,10 +1,11 @@
 //======include header======
 #include "Lives.h"
 
-// c-tor
+//===============C-TORS===============
 Lives::Lives(int lives) : m_number_of_live(lives) {};
 //----------------------------------------------------------------------------
 
+//===============Helpers===============
 // decreases the lives
 void Lives::decrese() { m_number_of_live--; }
 //----------------------------------------------------------------------------

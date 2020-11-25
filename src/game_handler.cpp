@@ -235,7 +235,7 @@ void Game_Handler::move_enemies()
 			if (m_monsters[index].get_smartnes() == 0)
 			{
 				//calcl path
-				m_monsters[index].path = CalculatePath(monster_location, player_location, m_board);
+				m_monsters[index].set_path(CalculatePath(monster_location, player_location, m_board));
 				//reset smartnes
 				m_monsters[index].reset_smartnes();
 			}
@@ -244,7 +244,7 @@ void Game_Handler::move_enemies()
 				m_monsters[index].dec_smartnes();
 			}
 			
-			int length_of_path = m_monsters[index].path.size();					
+			int length_of_path = m_monsters[index].get_path_size();					
 
 			if(length_of_path == 0){
 				move_based_on_dirrection(NONE, m_monsters[index]);
@@ -252,13 +252,13 @@ void Game_Handler::move_enemies()
 			}
 			
 			if (rand() % 8 == 1) {
-				random_move(m_monsters[index], m_monsters[index].path[0]);
-				m_monsters[index].path.erase(m_monsters[index].path.begin());
+				random_move(m_monsters[index], m_monsters[index].get_next_path());
+				m_monsters[index].remove_first_in_path();
 				continue;
 			}
 				
-			move_based_on_dirrection(m_monsters[index].path[0] , m_monsters[index]);
-			m_monsters[index].path.erase(m_monsters[index].path.begin());
+			move_based_on_dirrection(m_monsters[index].get_next_path(), m_monsters[index]);
+			m_monsters[index].remove_first_in_path();
 
 		}
 

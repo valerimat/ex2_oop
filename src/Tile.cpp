@@ -25,7 +25,7 @@ Tile::Tile() :
  {};
 //----------------------------------------------------------------------------
 
-
+//operator == on 2 tiles
 bool Tile::operator==(Tile& tile) const {
 	if (this->m_location == tile.m_location &&
 		this->m_value == tile.m_value &&
@@ -40,6 +40,7 @@ bool Tile::operator==(Tile& tile) const {
 };
 //----------------------------------------------------------------------------
 
+//operator != on two tiles
 bool Tile::operator!=(Tile& tile) const {
 	if (this->m_location == tile.m_location &&
 		this->m_value == tile.m_value &&
