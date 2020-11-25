@@ -14,7 +14,7 @@ void  Location::update_based_on_key(int key)
         col++;
 }
 
-
+// operator == function, checks if the locations are the same
 bool Location::operator==(Location& location)const {
     if (this->col == location.col && this->row == location.row)
         return true;
@@ -23,10 +23,10 @@ bool Location::operator==(Location& location)const {
 
 };
 
+// operator != function, checks if the locations aren't the same
 bool Location::operator!=(Location& location)const {
     if (this->col == location.col && this->row == location.row)
         return false;
 
     return true;
-
 };

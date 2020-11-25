@@ -1,8 +1,10 @@
 #include "Board.h"
+
 const char enemy = '%';
-const char coin = '*';
+const char coin =   '*';
 const char player = '@';
 
+// constructor 
 Board::Board()
 {
 
@@ -67,13 +69,12 @@ Board::Board()
 ;
 }
 
-
+// reloads the level again
 void Board::relload_level() {
 	levels[curr_level] = levels_backup[curr_level];
 }
 
-
-// gets the location of the player according to '@' char
+// gets the location of the player, all the monster and all the coins
 void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  & coins, Location & playerLocation )
 {
 	Location location(-1, -1); //default size in order to use it
@@ -112,14 +113,11 @@ void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  &
 	}
 }
 
-
+// loads the next level
 void Board::load_next_level()
 {
-
 	increase_level();
-
 }
-
 
 
 // prints the board
@@ -128,8 +126,6 @@ void Board::print_board()
 	for (int i = 0; i < levels[curr_level].size(); i++)
 		std::cout << levels[curr_level][i] << std::endl;
 }
-
-
 
 // gets height
 int Board::get_height()
@@ -148,31 +144,38 @@ char Board::get_char(Location location) const {
 	return levels[curr_level][location.row][location.col];
 }
 
+// gets a specific char from the main board
 char Board::get_char(int row, int col) 
 {
 	return levels[curr_level][row][col];
 }
 
+// get a specific char from then clean board
 char Board::get_clean_board_char(int row, int col)
 {
 	return levels_clean[curr_level][row][col];
 }
 
+// replaces a char with a clean board
 void Board::replace_char(Location &location)
 {
-	levels[curr_level][location.row][location.col] = levels_clean[curr_level][location.row][location.col];
+	levels		[curr_level][location.row][location.col] = 
+	levels_clean[curr_level][location.row][location.col];
 }
 
+// deletes a char and fill it with a space
 void Board::delete_char(Location& location)
 {
 	levels[curr_level][location.row][location.col] = ' ';
 }
 
+// add a specific char into a specific location
 void Board::add_char(Location location, char sign)
 {
 	levels[curr_level][location.row][location.col] = sign;
 }
 
+// clears the vector from holding any data 
 void Board::clear_board()
 {
 	for (int i = 0; i < levels[curr_level].size(); i++)
@@ -185,24 +188,19 @@ void Board::clear_board()
 	levels_clean[curr_level].clear();
 }
 
-
-
-
+// increases the level
 void Board::increase_level()
 {
 	curr_level +=1;
 }
 
-
-
+// gets the level
 int Board::get_level()
 {
 	return curr_level+1;
 }
 
-
-
-
+// checks if there are more levels
 bool Board::no_more_levels() {
 	if (curr_level == levels.size())
 		return true;

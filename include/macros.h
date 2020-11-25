@@ -1,7 +1,4 @@
-
 #pragma once
-
-
 
 enum Moves {
 	UP,
