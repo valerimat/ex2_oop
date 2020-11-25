@@ -5,7 +5,7 @@ const char enemy  = '%';
 const char coin   = '*';
 const char player = '@';
 
-// c-tor
+//===============C-TOR===============
 Board::Board()
 {
 

@@ -1,7 +1,7 @@
 //======include header======
 #include "Coin.h"
 
-// c-tor
+//===============C-TORS===============
 Coins::Coins(Location& location) :m_loctaion(location) {};
 //----------------------------------------------------------------------------
 
