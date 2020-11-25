@@ -2,15 +2,9 @@
 
 
 Game_Handler::Game_Handler(Board& board)
-	:m_board(board),
-	 m_level(1)
+	:m_board(board)
 {
-	Location player_location(0, 0);
-
-	board.get_locations(m_monsters, m_coins, player_location);
-
-	m_player.set_loctaion(player_location);
-
+	init_new_level();
 }
 
 
@@ -23,18 +17,15 @@ void Game_Handler::Run_game()
 
 	int key; //  right now it will be W,A,S,D key
   
-	int score = 0;
-
 	
-
 	while (1)
 	{
-		std::cout << "         LEVEL - X\n";
+		std::cout << "         LEVEL -  " << m_board.get_level() << std::endl;
 		//loads the level
 		m_board.print_board();
 
 	
-		std::cout << "     health - X , score - " << m_player.get_score();
+		std::cout << "     health - "<<  m_player.get_lives()  <<" , score - " << m_player.get_score();
 
 		//fix to work with W,A,S,D
 		int key = Keyboard::getch();
@@ -45,14 +36,12 @@ void Game_Handler::Run_game()
 		//check if we collected all coins
 		end = no_coins();
 		if (end) {
-			system("CLS");
-			m_player.increse_score_end_level(m_level);
-			m_board.load_next_level(m_board, ++m_level);
-			
-			init_new_level();
+
+			load_next_level();
+	
 			continue;
 		}
-				//load_next
+		
 
 		// move enemies
 		move_enemies();
@@ -61,9 +50,6 @@ void Game_Handler::Run_game()
 
 		system("CLS");
 
-		//if player dead => exit
-
-		//if  collected all coins => next level
 
 	}
 }
@@ -115,12 +101,13 @@ void Game_Handler::move_player(int key)
 			m_player.set_loctaion(current_location);
 			m_board.add_char(current_location, '@');
 			//update score
-			m_player.increse_score(m_level);
+			m_player.increse_score(m_board.get_level());
 			//delete from vector
 			delete_coin_from_vector(m_player.get_location());
 			break;
+
 		case Enemy: // %
-			// add it later
+			die();
 		default: // Ground
 			if (key == 119)
 			{
@@ -188,26 +175,47 @@ enum nextStep Game_Handler::what_is_there_ahead(int key)
 	return Ground;
 }
 
-void Game_Handler::print_player_location()
-{
-	std::cout << std::endl << "( " << m_player.get_location().row <<
-						     " , " << m_player.get_location().col << " )";
+
+void Game_Handler::die() {
+		
+	if (m_player.get_lives()-1 == 0) {
+		system("CLS");
+		std::cout << "              YOU HAVE DIED !!!\n" << "              Try Again\n"
+			<< "              Your Score  : " << m_player.get_score();
+		exit(EXIT_SUCCESS);
+	}
+	else {
+		m_board.relload_level();
+		//loads same level
+		m_player.decrese_live();
+
+		system("CLS");
+
+		init_new_level();
+
+		Run_game();
+	}
 }
 
-
 void Game_Handler::move_enemies() {
-	int how_many_enemies = m_monsters.size();
-	int index = 0;
-	Location player_location = m_player.get_location();
 
-	if (how_many_enemies != 0) {
-		for (index; index < how_many_enemies; index++) {
-			Location monster_location = m_monsters[index].get_location();
-			if (m_board.get_char(monster_location.row + 1, monster_location.col) == ' ' && m_monsters[index].get_deleted_it() != '-' ) {
-				//if nothing bellow and we are not on a pole
-				move_based_on_dirrection(DOWN, m_monsters[index]);
-				continue;
-			}
+	int how_many_enemies = m_monsters.size();
+	
+	//if no enemies
+	if (how_many_enemies == 0)
+		return;
+
+	int index = 0;
+
+	Location player_location = m_player.get_location();
+			
+
+	for (index; index < how_many_enemies; index++) {
+
+	
+
+		Location monster_location = m_monsters[index].get_location();
+
 			if (m_monsters[index].get_smartnes() == 0) {
 				//calcl path
 				m_monsters[index].path = CalculatePath(monster_location, player_location, m_board);
@@ -216,21 +224,29 @@ void Game_Handler::move_enemies() {
 			}
 			else {
 				m_monsters[index].dec_smartnes();
-				continue;
+
 			}
 			
-
-			//can implement better with
+	
 			int length_of_path = m_monsters[index].path.size();
+
+					
+
+			if(length_of_path == 0){
+				move_based_on_dirrection(NONE, m_monsters[index]);
+				continue;
+			
+			}
+				
+
+
 			move_based_on_dirrection(m_monsters[index].path[0] , m_monsters[index]);
 			m_monsters[index].path.erase(m_monsters[index].path.begin());
 
 		}
 
-	}
+	
 };
-
-
 
 
 
@@ -238,49 +254,60 @@ void Game_Handler::move_enemies() {
 void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster) {
 
 	//we dont need to move
-	if (dirrection == NONE)
-		return;
+	
 
 
+	//returning char we previously deleted
 	m_board.add_char(monster.get_location(), monster.get_deleted_it());
 
-	Location monster_location = monster.get_location();
-	Location new_location(0,0);
+	//if x_axis
+	bool x_axis = true;
+
+	//adding more stupidity
+	
 
 
 	switch ((enum Moves)dirrection)
 	{
-
 	case UP:
-		new_location = Location(monster_location.row - 1, monster_location.col);
-		monster.set_deleted_it(m_board.get_char(new_location));
-		monster.relocate(new_location);
-		m_board.add_char(new_location, '%');
+		move_based_on_dirrection(!x_axis, -1, monster);
 		break;
 
 	case DOWN:
-		new_location = Location(monster_location.row + 1, monster_location.col);
-		monster.set_deleted_it(m_board.get_char(new_location));
-		monster.relocate(new_location);
-		m_board.add_char(new_location, '%');
+		move_based_on_dirrection(!x_axis, 1, monster);
 		break;
 
 	case RIGHT:
-		new_location = Location(monster_location.row, monster_location.col+1);
-		monster.set_deleted_it(m_board.get_char(new_location));
-		monster.relocate(new_location);
-		m_board.add_char(new_location, '%');
+		move_based_on_dirrection(x_axis, 1, monster);
 		break;
-
 	case LEFT:
-		new_location = Location(monster_location.row, monster_location.col-1);
-		monster.set_deleted_it(m_board.get_char(new_location));
-		monster.relocate(new_location);
-		m_board.add_char(new_location, '%');
+		move_based_on_dirrection(x_axis, -1, monster);
 		break;
-
+	case NONE:
+		move_based_on_dirrection(x_axis, 0, monster);
 	}
+}
 
+
+
+void Game_Handler::move_based_on_dirrection(bool x_axis, int direct, Monster & monster) {
+	
+	Location new_location(0, 0);
+
+;	if (x_axis) {
+		new_location = Location(monster.get_location().row, monster.get_location().col + direct);
+	}
+	else {
+		new_location = Location(monster.get_location().row + direct, monster.get_location().col );
+	}
+	
+	monster.set_deleted_it(m_board.get_char(new_location));
+
+	if (monster.get_deleted_it() == '@')
+		die();
+
+	monster.relocate(new_location);
+	m_board.add_char(new_location, '%');
 }
 
 
@@ -295,7 +322,17 @@ void Game_Handler::delete_coin_from_vector(Location  location) {
 }
 
 
+void Game_Handler::load_next_level() {
+	system("CLS");
+	m_player.increse_score_end_level(m_board.get_level());
 
+	if (m_board.no_more_levels())
+		you_won();
+
+	m_board.load_next_level();
+
+	init_new_level();
+}
 
 
 
@@ -310,10 +347,20 @@ return false;
 void Game_Handler::init_new_level() {
 	Location player_location(0, 0);
 	m_monsters.clear();
+
 	m_coins.clear();
 
 	m_board.get_locations(m_monsters, m_coins, player_location);
 
 	m_player.set_loctaion(player_location);
 
+}
+
+
+void Game_Handler::you_won() {
+	std::cout << "           YOU HAVE WON" << std::endl;
+	std::cout << "           Thanks for playing" << std::endl;
+	std::cout << "           Your score is: " << m_player.get_score()<<std::endl;
+
+	exit(EXIT_SUCCESS);
 }

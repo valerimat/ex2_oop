@@ -18,7 +18,7 @@ public:
 	void increse_score(int value);
 	void decrese_live();
 	int get_score();
-	Lives get_lives();
+	int get_lives();
 	void reset(Location& starting_location);
 	void set_lives(int lives);
 	void set_score(int score);

@@ -15,7 +15,7 @@ std::vector<int> CalculatePath(Location & from,
 		std::vector<int> path(1);
 		path[0] = NONE;
 		return path;
- 	}
+	}
 
 	// will store open list of tiles
 	std::vector<Tile> open_list;
@@ -49,7 +49,13 @@ std::vector<int> CalculatePath(Location & from,
 
 	int index_of_father = 0;
 	while (true) {
-		
+		//fail safe
+		if(open_list.size() == 0 ) {
+			std::vector<int> path(1);
+			path[0] = NONE;
+			return path;
+		}
+
 		//reset arround list
 		arround.clear();
 		//get the index of the tile if the loweest score from the open list
@@ -126,6 +132,7 @@ void get_around(const Tile & curr_tile,
 {
 
 	Location curr_location = curr_tile.m_location;
+
 	//getting all 
 	Location above   (curr_location.row - 1, curr_location.col),
 			 below   (curr_location.row + 1, curr_location.col),
@@ -177,8 +184,13 @@ bool check_validity(Tile curr_tile,
 {
 	
 	int tile_in_closed = check_if_tile_in_vector(curr_tile,closed_list);
+
 	if (tile_in_closed != -1)
 		return false;
+
+	if (curr_tile.m_value == '@')
+		return true;
+
 
 	int size_of_list = closed_list.size();
 	int index = 0;
@@ -189,76 +201,47 @@ bool check_validity(Tile curr_tile,
 		return false;
 
 	//checking its not in the closed list
+	/*
 	while (index < size_of_list) {
 		if (curr_tile.m_location == closed_list[index].m_location) {
 			return false;
 		}
 		++index;
 	}
+	*/
 
-
-	char above = board.get_char(curr_location.row - 1, curr_location.col),
-		below = board.get_char(curr_location.row + 1, curr_location.col),
-		to_the_left = board.get_char(curr_location.row, curr_location.col - 1),
-		to_the_right = board.get_char(curr_location.row, curr_location.col + 1);
+	char below = board.get_char(curr_location.row + 1, curr_location.col);
 	
-	if (curr_tile.m_value == '@')
-		return true;
+	
+	
 
 	switch (move) {
 		case LEFT:
-			//if there is wall to the  left
-			if (to_the_left == '#')
+			if (curr_tile.m_value == '#')
 				return false;
-			//if he is falling
-			else if (below == ' ' || below == 'H') {
-				//if (to_the_left == '-'|| to_the_left == '@' || to_the_left == '%')
-					return true;
-				//else
-					//return  false;
-			}
+			else if (below == ' ' && curr_tile.m_value != '-')
+				return false;
 			return true;
 			break;
 
 		case RIGHT:
 			//if there is wall  to the right
-			if (to_the_right == '#')
+			if (curr_tile.m_value == '#')
 				return false;
-			//if he is falling
-			else if (below == ' ' || below == 'H') {
-				//if (to_the_right == '-' || to_the_right == '@' || to_the_right == '%')
-					return true;
-				//else
-					//return  false;
-			}
+			else if (below == ' ' && curr_tile.m_value != '-') 
+					return false;
+			
 			return true;
 			break;
 
 		case UP:
-			//if there is wall above
-			if (above == 'H')
+			if (curr_tile.m_value == 'H')
 				return true;
-			if (above == '@')
-				return true;
-			if (above == '%')
-				return true;
-
-			if (curr_tile.m_value == '@' && above == ' ')
-				return true;
-			if (curr_tile.m_value == '%' && above == ' ')
-				return true;
-			if (curr_tile.m_value == 'H' && above == ' ')
-				return true;
-			if (above == '#')
-				return true;
-			
 			return false;
-				
 			break;
 
 		case DOWN:
-			//if there is wall below
-			if (curr_tile.m_value == '-')
+			if (curr_tile.m_value == '#')
 				return false;
 
 			return true;
@@ -318,9 +301,7 @@ int check_if_tile_in_vector(Tile tile,  std::vector<Tile> open_list) {
 	while (index < size) {
 
 		if (tile.m_location == open_list[index].m_location) {
-			index--;
 			return index;
-
 		}
 			
 
@@ -378,6 +359,11 @@ std::vector <int> make_path(std::vector < Tile> closed, Tile to) {
 		index_of_father = closed[index_of_father].m_father;
 
 	}
+	if(closed.size() == 2)
+		path.insert(path.begin(), closed[1].m_move);
+
+	path.insert(path.begin(), closed[index_of_father].m_move);
+
 		return path;
 }
 
