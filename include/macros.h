@@ -1,5 +1,5 @@
-
 #pragma once
+
 
 const int NUMBER_OF_LIVES = 3;
 

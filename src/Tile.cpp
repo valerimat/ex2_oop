@@ -1,6 +1,7 @@
+//======include header======
 #include "Tile.h"
 
-
+// c-tor
 Tile::Tile(Location& location, char value, int index_of_father, enum Moves move,int h_value) :
 	m_location(location),
 	m_value(value),
@@ -10,7 +11,9 @@ Tile::Tile(Location& location, char value, int index_of_father, enum Moves move,
 	m_move(move),
 	m_father(index_of_father)
 {};
+//----------------------------------------------------------------------------
 
+// c-tor
 Tile::Tile() :
 	m_location(Location(0, 0)),
 	m_value('/0'),
@@ -20,7 +23,7 @@ Tile::Tile() :
 	m_father(0),
 	m_move(NONE)
  {};
-
+//----------------------------------------------------------------------------
 
 
 bool Tile::operator==(Tile& tile) const {
@@ -35,6 +38,7 @@ bool Tile::operator==(Tile& tile) const {
 
 	return false;
 };
+//----------------------------------------------------------------------------
 
 bool Tile::operator!=(Tile& tile) const {
 	if (this->m_location == tile.m_location &&
@@ -48,3 +52,4 @@ bool Tile::operator!=(Tile& tile) const {
 
 	return true;
 };
+//----------------------------------------------------------------------------

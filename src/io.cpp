@@ -1,5 +1,7 @@
+//======include header======
 #include "io.h"
 
+// define section
 #define VC_EXTRALEAN
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
