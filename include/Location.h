@@ -13,5 +13,5 @@ struct Location
     // members
     int row;
     int col;
-    
+ 
 };

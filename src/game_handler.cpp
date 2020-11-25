@@ -1,12 +1,12 @@
+//======include header======
 #include "Game_handler.h"
 
-// constructor
-Game_Handler::Game_Handler(Board& board)
-	:m_board(board)
+// c-tor
+Game_Handler::Game_Handler(Board& board) :m_board(board)
 {
 	init_new_level();
 }
-
+//----------------------------------------------------------------------------
 
 // runs the game - main function
 void Game_Handler::Run_game()
@@ -47,6 +47,7 @@ void Game_Handler::Run_game()
 
 	}
 }
+//----------------------------------------------------------------------------
 
 // main function where the player moves according to the all ifs
 void Game_Handler::move_player(int key)
@@ -125,6 +126,7 @@ void Game_Handler::move_player(int key)
 		}
 	}
 }
+//----------------------------------------------------------------------------
 
 // we get whats ahead of the player using enum to make it more clear
 enum nextStep Game_Handler::what_is_there_ahead(int key)
@@ -164,6 +166,7 @@ enum nextStep Game_Handler::what_is_there_ahead(int key)
 
 	return Ground;
 }
+//----------------------------------------------------------------------------
 
 // in case the player died (= 0 lives) 
 void Game_Handler::die()
@@ -189,13 +192,14 @@ void Game_Handler::die()
 		Run_game();
 	}
 }
+//----------------------------------------------------------------------------
 
 void Game_Handler::move_enemies()
 {
 
 	int how_many_enemies = m_monsters.size();
 	
-	//if no enemies
+	//if there are no enemies
 	if (how_many_enemies == 0)
 		return;
 
@@ -234,13 +238,11 @@ void Game_Handler::move_enemies()
 		}
 
 };
+//----------------------------------------------------------------------------
 
 void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster)
 {
-
 	//we dont need to move
-	
-
 
 	//returning char we previously deleted
 	m_board.add_char(monster.get_location(), monster.get_deleted_it());
@@ -250,8 +252,6 @@ void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster)
 
 	//adding more stupidity
 	
-
-
 	switch ((enum Moves)dirrection)
 	{
 	case UP:
@@ -272,8 +272,7 @@ void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster)
 		move_based_on_dirrection(x_axis, 0, monster);
 	}
 }
-
-
+//----------------------------------------------------------------------------
 
 void Game_Handler::move_based_on_dirrection(bool x_axis, int direct, Monster & monster)
 {
@@ -293,6 +292,7 @@ void Game_Handler::move_based_on_dirrection(bool x_axis, int direct, Monster & m
 	monster.relocate(new_location);
 	m_board.add_char(new_location, '%');
 }
+//----------------------------------------------------------------------------
 
 // deletes the coin from the vector when the player steps on it
 void Game_Handler::delete_coin_from_vector(Location  location)
@@ -305,6 +305,7 @@ void Game_Handler::delete_coin_from_vector(Location  location)
 		}
 	}
 }
+//----------------------------------------------------------------------------
 
 // loads the next level, if there are no more levels then the player won
 void Game_Handler::load_next_level()
@@ -319,7 +320,7 @@ void Game_Handler::load_next_level()
 
 	init_new_level();
 }
-
+//----------------------------------------------------------------------------
 
 // checks if there are coins left 
 bool Game_Handler::no_coins()
@@ -329,6 +330,7 @@ bool Game_Handler::no_coins()
 	
 	return false;
 }
+//----------------------------------------------------------------------------
 
 // initializes all the info about the level
 void Game_Handler::init_new_level()
@@ -342,6 +344,7 @@ void Game_Handler::init_new_level()
 
 	m_player.set_loctaion(player_location);
 }
+//----------------------------------------------------------------------------
 
 // prints the following text below if the player won
 void Game_Handler::you_won() 
@@ -352,3 +355,4 @@ void Game_Handler::you_won()
 
 	exit(EXIT_SUCCESS);
 }
+//----------------------------------------------------------------------------

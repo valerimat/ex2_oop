@@ -11,6 +11,7 @@ public:
 	// get function
 	int get_score();
 
+	// misc
 	void increase(int level);
 	void level_end(int level);
 

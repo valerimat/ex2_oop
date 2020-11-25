@@ -1,3 +1,6 @@
+#pragma once
+
+//======include section======
 #include <iostream>
 #include <vector>
 #include "Board.h"

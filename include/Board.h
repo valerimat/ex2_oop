@@ -1,3 +1,5 @@
+#pragma once
+
 // include section
 #include <iostream>
 #include <vector>
@@ -7,13 +9,11 @@
 #include "Monster.h"
 #include "Coin.h"
 
-#pragma once
-
 class Board
 {
 public:
 
-	// constructor
+	// c-tor
 	Board();
 
 	// get functions
