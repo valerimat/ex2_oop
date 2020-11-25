@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Location.h"
 #include <vector>
 #include "Tile.h"

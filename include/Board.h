@@ -1,3 +1,6 @@
+#pragma once
+
+// include section
 #include <iostream>
 #include <vector>
 #include <string>
@@ -6,44 +9,40 @@
 #include "Monster.h"
 #include "Coin.h"
 
-#pragma once
-
 class Board
 {
 public:
-	Board(); // constructor
 
-	void load_next_level();
+	// c-tor
+	Board();
 
-	void get_locations(std::vector<Monster> & , std::vector<Coins> &, Location&); // gets the location of the hero on the map
-
-	int get_height();
-	int get_width();
-
-	void clear_board();
-
-	void print_board();
-	void print_board2();
-	void replace_char(Location &location);
-	void delete_char(Location &);
-	void add_char(Location , char);
-
-	//returns char based on wanted location
+	// get functions
+	int  get_height();
+	int  get_width();
 	char get_char(Location location) const;
 	char get_char(int row, int col);
 	char get_clean_board_char(int row, int col);
-	std::vector<std::string> get_clean_board();
-	//bool is_above_ground();
-	int get_level();
+	void get_locations(std::vector<Monster> &, std::vector<Coins> &, Location &); // gets the location of the hero on the map
+	int  get_level();
+
+	// board related functions
+	void clear_board();
+	void print_board();
+
+	// level related functions
+	void load_next_level();
 	bool no_more_levels();
 	void relload_level();
 
-private:
+	// char related functions
+	void add_char(Location, char);
+	void replace_char(Location &location);
+	void delete_char(Location &);
 
-	
-	void increase_level();
+private:
 	int curr_level;
 	std::vector <std::vector <std::string>> levels;
 	std::vector <std::vector <std::string>> levels_backup;
 	std::vector <std::vector <std::string>> levels_clean;
+	void increase_level();
 };

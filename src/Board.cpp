@@ -1,8 +1,11 @@
+//======include header======
 #include "Board.h"
-const char enemy = '%';
-const char coin = '*';
+
+const char enemy  = '%';
+const char coin   = '*';
 const char player = '@';
 
+// c-tor
 Board::Board()
 {
 
@@ -19,9 +22,9 @@ Board::Board()
 		exit(EXIT_FAILURE);
 	}
 
-	
 	int idex_of_levle = 0;
-	while (file.peek() != EOF) {
+	while (file.peek() != EOF)
+	{
 		std::vector<std::string> m_vector_of_strings; // will hold 2D array of the map and its content
 		std::vector<std::string> m_clean_vector_of_strings;
 
@@ -36,9 +39,6 @@ Board::Board()
 				m_vector_of_strings.push_back(str);
 				m_clean_vector_of_strings.push_back(str);
 			}
-
-			
-
 		}
 		// Read the next line from File untill it reaches empty row.
 		while (str.size() > 0);
@@ -63,17 +63,19 @@ Board::Board()
 		m_vector_of_strings.clear();
 		m_clean_vector_of_strings.clear();
 	}	
-
-;
 }
+//----------------------------------------------------------------------------
 
-
-void Board::relload_level() {
+// reloads the level again
+void Board::relload_level() 
+{
 	levels[curr_level] = levels_backup[curr_level];
 }
+//----------------------------------------------------------------------------
 
+//===============Getters===============
 
-// gets the location of the player according to '@' char
+// gets the location of the player, all the monster and all the coins
 void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  & coins, Location & playerLocation )
 {
 	Location location(-1, -1); //default size in order to use it
@@ -111,16 +113,56 @@ void Board::get_locations(std::vector<Monster> & monsters, std::vector<Coins>  &
 		}
 	}
 }
+//----------------------------------------------------------------------------
+
+// gets height
+int Board::get_height()
+{
+	return levels[curr_level].size();
+}
+//----------------------------------------------------------------------------
+
+// gets width 
+int Board::get_width()
+{
+	return levels[curr_level][0].size();
+}
+//----------------------------------------------------------------------------
+
+//returns which char there is an a specific location
+char Board::get_char(Location location) const {
+	return levels[curr_level][location.row][location.col];
+}
+//----------------------------------------------------------------------------
+
+// gets a specific char from the main board
+char Board::get_char(int row, int col)
+{
+	return levels[curr_level][row][col];
+}
+//----------------------------------------------------------------------------
+
+// get a specific char from then clean board
+char Board::get_clean_board_char(int row, int col)
+{
+	return levels_clean[curr_level][row][col];
+}
+//----------------------------------------------------------------------------
+
+// gets the level
+int Board::get_level()
+{
+	return curr_level + 1;
+}
+//----------------------------------------------------------------------------
 
 
+// loads the next level
 void Board::load_next_level()
 {
-
 	increase_level();
-
 }
-
-
+//----------------------------------------------------------------------------
 
 // prints the board
 void Board::print_board()
@@ -128,51 +170,31 @@ void Board::print_board()
 	for (int i = 0; i < levels[curr_level].size(); i++)
 		std::cout << levels[curr_level][i] << std::endl;
 }
+//----------------------------------------------------------------------------
 
-
-
-// gets height
-int Board::get_height()
-{
-	return levels[curr_level].size();
-}
-
-// gets width 
-int Board::get_width()
-{
-	return levels[curr_level][0].size();
-}
-
-//returns which char there is an a specific location
-char Board::get_char(Location location) const {
-	return levels[curr_level][location.row][location.col];
-}
-
-char Board::get_char(int row, int col) 
-{
-	return levels[curr_level][row][col];
-}
-
-char Board::get_clean_board_char(int row, int col)
-{
-	return levels_clean[curr_level][row][col];
-}
-
+// replaces a char with a clean board
 void Board::replace_char(Location &location)
 {
-	levels[curr_level][location.row][location.col] = levels_clean[curr_level][location.row][location.col];
+	levels		[curr_level][location.row][location.col] = 
+	levels_clean[curr_level][location.row][location.col];
 }
+//----------------------------------------------------------------------------
 
+// deletes a char and fill it with a space
 void Board::delete_char(Location& location)
 {
 	levels[curr_level][location.row][location.col] = ' ';
 }
+//----------------------------------------------------------------------------
 
+// add a specific char into a specific location
 void Board::add_char(Location location, char sign)
 {
 	levels[curr_level][location.row][location.col] = sign;
 }
+//----------------------------------------------------------------------------
 
+// clears the vector from holding any data 
 void Board::clear_board()
 {
 	for (int i = 0; i < levels[curr_level].size(); i++)
@@ -184,27 +206,19 @@ void Board::clear_board()
 	levels[curr_level].clear();
 	levels_clean[curr_level].clear();
 }
+//----------------------------------------------------------------------------
 
-
-
-
+// increases the level
 void Board::increase_level()
 {
 	curr_level +=1;
 }
+//----------------------------------------------------------------------------
 
-
-
-int Board::get_level()
-{
-	return curr_level+1;
-}
-
-
-
-
+// checks if there are more levels
 bool Board::no_more_levels() {
 	if (curr_level == levels.size())
 		return true;
 	return false;
 }
+//----------------------------------------------------------------------------
