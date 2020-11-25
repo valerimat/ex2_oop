@@ -27,7 +27,7 @@ void Game_Handler::Run_game()
 		std::cout << "     health - "<<  m_player.get_lives()  <<" , score - " << m_player.get_score();
 
 		//fix to work with W,A,S,D
-		int key = Keyboard::getch();
+		 key = Keyboard::getch();
 
 		//if wasnt a valid move		
 		if (!move_player(key)) {
@@ -152,7 +152,6 @@ bool Game_Handler::move_player(int key)
 // we get whats ahead of the player using enum to make it more clear
 enum nextStep Game_Handler::what_is_there_ahead(int key)
 {
-	enum nextStep situatuon;
 	Location current_location = m_player.get_location();
 	char current_letter;
 
