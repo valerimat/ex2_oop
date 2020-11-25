@@ -13,6 +13,7 @@ Board::Board()
 
 	std::string   str; // temporary string which we push into the vector;
 	std::ifstream file;
+	std::string   size;
 
 	file.open("Board.txt"); // Board.txt has the all levels 
 
@@ -21,13 +22,16 @@ Board::Board()
 		std::cout << "File didn't open\n";
 		exit(EXIT_FAILURE);
 	}
-
+	char N;
 	int idex_of_levle = 0;
 	while (file.peek() != EOF)
 	{
 		std::vector<std::string> m_vector_of_strings; // will hold 2D array of the map and its content
 		std::vector<std::string> m_clean_vector_of_strings;
+		
+		getline(file,size);
 
+		int index = 0;
 		do
 		{
 			//reads each line from the Board.txt
@@ -39,9 +43,10 @@ Board::Board()
 				m_vector_of_strings.push_back(str);
 				m_clean_vector_of_strings.push_back(str);
 			}
+			index++;
 		}
 		// Read the next line from File untill it reaches empty row.
-		while (str.size() > 0);
+		while (index < stoi(size));
 
 		levels.push_back(m_vector_of_strings);
 		levels_backup.push_back(m_vector_of_strings);
@@ -221,7 +226,7 @@ void Board::increase_level()
 
 // checks if there are more levels
 bool Board::no_more_levels() {
-	if (curr_level == levels.size())
+	if (curr_level +1 == levels.size())
 		return true;
 	return false;
 }

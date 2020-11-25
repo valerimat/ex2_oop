@@ -411,13 +411,14 @@ char Game_Handler::there_is_a_monster(Location & location) {
 void Game_Handler::load_next_level()
 {
 	system("CLS");
-	m_player.increse_score_end_level(m_board.get_level());
 
 	if (m_board.no_more_levels())
 		you_won();
 
-	m_board.load_next_level();
+	m_player.increse_score_end_level(m_board.get_level());
 
+	m_board.load_next_level();
+	
 	init_new_level();
 }
 //----------------------------------------------------------------------------
