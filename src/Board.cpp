@@ -129,7 +129,9 @@ void Board::print_board()
 		std::cout << levels[curr_level][i] << std::endl;
 }
 
-
+char Board::return_char_from_default(Location location) const {
+	return levels_backup[curr_level][location.row][location.col];
+}
 
 // gets height
 int Board::get_height()

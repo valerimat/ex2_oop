@@ -27,6 +27,7 @@ public:
 	void replace_char(Location &location);
 	void delete_char(Location &);
 	void add_char(Location , char);
+	char return_char_from_default(Location location) const;
 
 	//returns char based on wanted location
 	char get_char(Location location) const;

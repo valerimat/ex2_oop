@@ -1,12 +1,12 @@
 
 #pragma once
 
-
+const int NUMBER_OF_LIVES = 3;
 
 enum Moves {
 	UP,
-	DOWN,
 	LEFT,
 	RIGHT,
+	DOWN,
 	NONE
 };

@@ -1,5 +1,5 @@
 #pragma once
-const int NUMBER_OF_LIVES = 3;
+#include "macros.h"
 #include "Score.h"
 #include "Lives.h"
 #include "Location.h"
@@ -8,9 +8,10 @@ const int NUMBER_OF_LIVES = 3;
 class Player {
 
 public:
+	
+	//----------------------------C-TORS
 	Player (Location location);
 	Player();
-
 	Location get_location();
 	
 	void set_loctaion(Location& new_location);
