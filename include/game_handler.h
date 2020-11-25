@@ -34,7 +34,7 @@ public:
 	//private ??
 	void Run_game();
 
-	void move_player(int key);
+    bool move_player(int key);
 	//void print_player_location();
 	void move_enemies();
 	//debug functions
