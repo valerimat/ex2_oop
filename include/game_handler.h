@@ -40,14 +40,16 @@ public:
 	bool no_coins();
 	void init_new_level();
 
-	int m_level;
 
+	void move_based_on_dirrection(bool x, int direct, Monster& monster);
 	void move_based_on_dirrection(int dirrection, Monster& monster);
-
+	void die();
 	std::vector<Monster> m_monsters;
 	std::vector<Coins> m_coins;
 
-
+private:
+	void you_won();
+	void load_next_level();
 
 	/*
 	

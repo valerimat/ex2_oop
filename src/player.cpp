@@ -43,8 +43,8 @@ int Player::get_score() {
 };
 
 
-Lives Player::get_lives() {
-    return m_player_lives;
+int Player::get_lives() {
+    return m_player_lives.get_lives();
 };
 
 
