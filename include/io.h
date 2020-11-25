@@ -10,6 +10,7 @@ const int KB_UP = 72;
 const int KB_DOWN = 80;
 const int KB_LEFT = 75;
 const int KB_RIGHT = 77;
+const int KB_ESC = 27;
 
 namespace Keyboard
 {

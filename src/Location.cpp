@@ -1,16 +1,17 @@
 //======include header======
 #include "Location.h"
+#include "io.h"
 
 // updates the location based on key pressed by the KB
 void Location::update_based_on_key(int key)
 {
-    if (key == 119) // up
+    if (key == KB_UP) // up
         row--;
-    if (key == 115) // down
+    if (key == KB_DOWN) // down
         row++;
-    if (key == 97) // left
+    if (key == KB_LEFT) // left
         col--;
-    if (key == 100) // right
+    if (key == KB_RIGHT) // right
         col++;
 }
 //----------------------------------------------------------------------------

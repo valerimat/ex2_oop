@@ -1,5 +1,6 @@
 //======include header======
 #include "Game_handler.h"
+#include "io.h"
 
 // c-tor
 Game_Handler::Game_Handler(Board& board) :m_board(board)
@@ -12,8 +13,7 @@ Game_Handler::Game_Handler(Board& board) :m_board(board)
 void Game_Handler::Run_game()
 {
 	bool end = false;
-
-	int key; //  right now it will be W,A,S,D key
+	int key;
 	
 	while (1) 
 	{
@@ -27,7 +27,14 @@ void Game_Handler::Run_game()
 		std::cout << "     health - "<<  m_player.get_lives()  <<" , score - " << m_player.get_score();
 
 		//fix to work with W,A,S,D
-		int key = Keyboard::getch();
+
+		key = get_proper_key();
+
+		if (key == KB_ESC)
+		{
+			system("CLS");
+			you_left();		
+		}
 
 		//if wasnt a valid move		
 		if (!move_player(key)) {
@@ -47,15 +54,12 @@ void Game_Handler::Run_game()
 		move_enemies(); // move enemies
 
 		system("CLS"); // clears the screen
-
-
 	}
 }
 //----------------------------------------------------------------------------
 
 // main function where the player moves according to the all ifs
 bool Game_Handler::move_player(int key)
-
 {	
 	enum nextStep next = what_is_there_ahead(key);
 	Location current_location = m_player.get_location(); // lets us hold the axis, where the player stands
@@ -64,7 +68,7 @@ bool Game_Handler::move_player(int key)
 		m_board.get_clean_board_char(current_location.row, current_location.col) == '-')
 	{
 		if(m_board.return_char_from_default(m_player.get_location()) == 'H')
-			if (key == 119) {
+			if (key == KB_UP) {
 				m_board.replace_char(current_location); // inserts the original char back to place
 				current_location.update_based_on_key(key); // we get the new location based on the key
 				m_player.set_loctaion(current_location);
@@ -88,7 +92,7 @@ bool Game_Handler::move_player(int key)
 			break;
 
 		case Pole: // - 
-			if (key == 119)
+			if (key ==	KB_UP)
 			{
 				m_board.add_char(current_location, '@'); //cannot get above the pole
 			}
@@ -118,7 +122,7 @@ bool Game_Handler::move_player(int key)
 
 
 		default: // Ground
-			if (key == 119)
+			if (key == KB_UP)
 			{
 				m_board.add_char(current_location, '@');
 			}
@@ -140,7 +144,7 @@ bool Game_Handler::move_player(int key)
 		while (m_board.get_char(current_location.row + 1, current_location.col) == ' ')
 		{
 			m_board.replace_char(current_location);		// inserts the original char back to place
-			current_location.update_based_on_key(115);  // 115 is down in the KB
+			current_location.update_based_on_key(KB_DOWN);  // 115 is down in the KB
 			m_player.set_loctaion(current_location);	// sets the new location in the vector
 			m_board.add_char(current_location, '@');	// inserts the player in the tile
 		}
@@ -156,13 +160,13 @@ enum nextStep Game_Handler::what_is_there_ahead(int key)
 	Location current_location = m_player.get_location();
 	char current_letter;
 
-	if (key == 119) // up
+	if (key == KB_UP) // up
 		current_location.row--;
-	if (key == 115) // down
+	if (key == KB_DOWN) // down
 		current_location.row++;
-	if (key == 97) // left
+	if (key == KB_LEFT) // left
 		current_location.col--;
-	if (key == 100) // right
+	if (key == KB_RIGHT) // right
 		current_location.col++;
 
 	current_letter = m_board.get_char(current_location);
@@ -453,3 +457,28 @@ void Game_Handler::you_won()
 	exit(EXIT_SUCCESS);
 }
 //----------------------------------------------------------------------------
+
+// prints the following text below if the player won
+void Game_Handler::you_left()
+{
+	std::cout << "           you have left the game unfinished" << std::endl;
+	std::cout << "           Thanks for trying" << std::endl;
+	std::cout << "           Your score was: " << m_player.get_score() << std::endl;
+
+	exit(EXIT_SUCCESS);
+}
+//----------------------------------------------------------------------------
+
+int Game_Handler::get_proper_key()
+{
+	int key = Keyboard::getch();
+	
+	while (key != 224)
+	{
+		if (key == 27)
+			return key; // ESC
+		key = Keyboard::getch();
+	}
+
+	return Keyboard::getch();
+}

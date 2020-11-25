@@ -26,26 +26,33 @@ enum nextStep
 class Game_Handler
 {
 public:
+	// c-tor
 	Game_Handler(Board& board);
 
+	// getters
+	int get_proper_key();
 
-	enum nextStep what_is_there_ahead(int key);
 
-	//private ??
-	void Run_game();
+	// setters
 
-    bool move_player(int key);
-	//void print_player_location();
-	void move_enemies();
-	//debug functions
-	void delete_coin_from_vector(Location location);
-	bool no_coins();
-	void init_new_level();
-	void random_move(Monster& monster, int);
-	char there_is_a_monster(Location& location);
+	// move
 	void move_based_on_dirrection(bool x, int direct, Monster& monster);
 	void move_based_on_dirrection(int dirrection, Monster& monster);
+	bool move_player(int key);
+	void move_enemies();
+void random_move(Monster& monster, int);
+
+	//misc
+	void Run_game();
+	enum nextStep what_is_there_ahead(int key);
+	void delete_coin_from_vector(Location location);
+	char there_is_a_monster(Location& location);
+
+	//end level/game
+	void init_new_level();
+	void you_left();
 	void die();
+	bool no_coins();	
 
 private:
 	Board  m_board;
