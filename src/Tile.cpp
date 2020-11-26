@@ -1,7 +1,9 @@
 //======include header======
 #include "Tile.h"
 
-// c-tor
+//===============C-TORS===============
+
+// c-tor with parameters
 Tile::Tile(Location& location, char value, int index_of_father, enum Moves move,int h_value) :
 	m_location(location),
 	m_value(value),
@@ -13,7 +15,7 @@ Tile::Tile(Location& location, char value, int index_of_father, enum Moves move,
 {};
 //----------------------------------------------------------------------------
 
-// c-tor
+// default c-tor
 Tile::Tile() :
 	m_location(Location(0, 0)),
 	m_value('/0'),

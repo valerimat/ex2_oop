@@ -8,6 +8,7 @@ Monster::Monster(Location& location)
 //----------------------------------------------------------------------------
 
 //===============Helpers===============
+
 // decreases the monster's IQ inorder to make the game much easier
 void Monster::dec_smartnes()
 {
