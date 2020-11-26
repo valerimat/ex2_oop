@@ -20,6 +20,10 @@ public:
 	// c-tor
 	Game_Handler(Board& board);
 
+	void Run_game();
+
+private:
+
 	// getters
 	int get_proper_key();
 
@@ -31,7 +35,6 @@ public:
 	//void random_move(Monster& monster, int);
 
 	//misc
-	void Run_game();
 	enum nextStep what_is_there_ahead(int key);
 	void delete_coin_from_vector(Location location);
 	char there_is_a_monster(Location& location);
@@ -40,9 +43,8 @@ public:
 	void init_new_level();
 	void you_left();
 	void die();
-	bool no_coins();	
+	bool no_coins();
 
-private:
 	Board  m_board;
 	Player m_player;
 	std::vector<Monster> m_monsters;
