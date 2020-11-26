@@ -8,7 +8,6 @@ Game_Handler::Game_Handler(Board& board) :m_board(board)
 	init_new_level();
 }
 //----------------------------------------------------------------------------
-
 // runs the game - main function
 void Game_Handler::Run_game()
 {
@@ -117,9 +116,7 @@ bool Game_Handler::move_player(int key)
 			break;
 
 		case Enemy: // %
-
 			die();
-
 
 		default: // Ground
 			if (key == KB_UP)
@@ -199,8 +196,11 @@ void Game_Handler::die()
 	if (m_player.get_lives()-1 == 0)
 	{
 		system("CLS");
-		std::cout << "              YOU HAVE DIED !!!\n" << "              Try Again\n"
-			<< "              Your Score  : " << m_player.get_score();
+		std::cout << "###########################################################		\n"
+				  << "                     YOU HAVE DIED !!!							\n"
+				  << "                        Try Again									\n"
+				  << "                    Your Score is: " << m_player.get_score() << " \n"
+				  << "###########################################################		\n";
 		exit(EXIT_SUCCESS);
 	}
 	else
@@ -450,9 +450,11 @@ void Game_Handler::init_new_level()
 // prints the following text below if the player won
 void Game_Handler::you_won() 
 {
-	std::cout << "           YOU HAVE WON" << std::endl;
-	std::cout << "           Thanks for playing" << std::endl;
-	std::cout << "           Your score is: " << m_player.get_score()<<std::endl;
+	std::cout << "###########################################################     \n"
+			  << "                     YOU HAVE WON!							  \n"
+			  << "                   Thanks for playing							  \n"
+			  << "                  Your score is: " << m_player.get_score()  << "\n"
+			  << "###########################################################     \n";
 
 	exit(EXIT_SUCCESS);
 }
@@ -461,14 +463,17 @@ void Game_Handler::you_won()
 // prints the following text below if the player won
 void Game_Handler::you_left()
 {
-	std::cout << "           you have left the game unfinished" << std::endl;
-	std::cout << "           Thanks for trying" << std::endl;
-	std::cout << "           Your score was: " << m_player.get_score() << std::endl;
+	std::cout << "###########################################################     \n"
+			  << "           you have left the game unfinished			          \n"
+			  << "                   Thanks for trying						      \n"
+			  << "                  Your score is: " << m_player.get_score()  << "\n"
+			  << "###########################################################     \n";
 
 	exit(EXIT_SUCCESS);
 }
 //----------------------------------------------------------------------------
 
+// get arrow key from the user unsless ESC was typed
 int Game_Handler::get_proper_key()
 {
 	int key = Keyboard::getch();

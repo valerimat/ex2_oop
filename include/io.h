@@ -5,7 +5,7 @@
 
 const int SPECIAL_KEY = 224;
 
-// special keys
+//=======special keys========
 const int KB_UP = 72;
 const int KB_DOWN = 80;
 const int KB_LEFT = 75;

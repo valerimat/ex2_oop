@@ -1,14 +1,14 @@
 //======include header======
 #include "Board.h"
 
+//======const section=======
 const char enemy  = '%';
 const char coin   = '*';
 const char player = '@';
 
-//===============C-TOR===============
+//===============C-TORS===============
 Board::Board()
 {
-
 	curr_level = 0;
 
 	std::string   str; // temporary string which we push into the vector;
@@ -24,6 +24,7 @@ Board::Board()
 	}
 	char N;
 	int idex_of_levle = 0;
+
 	while (file.peek() != EOF)
 	{
 		std::vector<std::string> m_vector_of_strings; // will hold 2D array of the map and its content

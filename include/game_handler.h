@@ -12,6 +12,7 @@
 #include "AlphaStar.h"
 #include "macros.h"
 
+//======enum section======
 enum nextStep
 {
 	Wall,
@@ -32,15 +33,12 @@ public:
 	// getters
 	int get_proper_key();
 
-
-	// setters
-
 	// move
 	void move_based_on_dirrection(bool x, int direct, Monster& monster);
 	void move_based_on_dirrection(int dirrection, Monster& monster);
 	bool move_player(int key);
 	void move_enemies();
-void random_move(Monster& monster, int);
+	void random_move(Monster& monster, int);
 
 	//misc
 	void Run_game();
@@ -59,6 +57,8 @@ private:
 	Player m_player;
 	std::vector<Monster> m_monsters;
 	std::vector<Coins>   m_coins;
+
+	//private level realated
 	void you_won();
 	void load_next_level();
 };
