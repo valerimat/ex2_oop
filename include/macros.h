@@ -12,3 +12,15 @@ enum Moves {
 	DOWN,
 	NONE
 };
+
+enum nextStep
+{
+	Wall,
+	Coin,
+	Enemy,
+	Pole,
+	Ground,
+	NoGround,
+	Ladder,
+	NoGo
+};

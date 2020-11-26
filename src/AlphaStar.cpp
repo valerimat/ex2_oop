@@ -129,15 +129,6 @@ void get_around(const Tile & curr_tile,
 	//getting all 
 	init_arround(arround, curr_tile.m_location, board, closed_list, index_of_father);
 
-	//check validity of tiles arround
-	if (!check_validity(arround[3], closed_list, board, LEFT))
-		arround.erase(arround.begin() + 3);
-	if (!check_validity(arround[2], closed_list, board, RIGHT))
-		arround.erase(arround.begin() + 2);
-	if (!check_validity(arround[1], closed_list, board, DOWN))
-		arround.erase(arround.begin() + 1);
-	if (!check_validity(arround[0], closed_list, board, UP))
-		arround.erase(arround.begin() + 0);
 }
 //====================================================================================
 
@@ -155,24 +146,45 @@ void init_arround(std::vector<Tile>& arround,
 		right_l(curr_location.row, curr_location.col + 1),
 		left_l(curr_location.row, curr_location.col - 1);
 
-	//getting chars that surround us
-	char top = board.get_char(above),
-		right = board.get_char(right_l),
-		left = board.get_char(left_l),
-		bottom = board.get_char(below);
+	if (!board.out_of_boundrie(above)) {
+		char top = board.get_char(above);
+		arround.push_back(Tile(above, top, index_of_father, (enum Moves)UP, closed_list[index_of_father].h_value + 1));
 
-	//push to list
-	arround.push_back(Tile(above, top, index_of_father, (enum Moves)UP, closed_list[index_of_father].h_value + 1));
-	arround.push_back(Tile(below, bottom, index_of_father, (enum Moves)DOWN, closed_list[index_of_father].h_value + 1));
-	arround.push_back(Tile(right_l, right, index_of_father, (enum Moves)RIGHT, closed_list[index_of_father].h_value + 1));
-	arround.push_back(Tile(left_l, left, index_of_father, (enum Moves)LEFT, closed_list[index_of_father].h_value + 1));
+		if (!check_validity(*( arround.end() -1) , closed_list, board, UP))
+			arround.erase(arround.end()- 1);
+
+	}
+	if (!board.out_of_boundrie(below)) {
+		char bottom = board.get_char(below);
+		arround.push_back(Tile(below, bottom, index_of_father, (enum Moves)DOWN, closed_list[index_of_father].h_value + 1));
+
+		if (!check_validity(*(arround.end() - 1), closed_list, board, DOWN))
+			arround.erase(arround.end() - 1);
+
+	}
+	if (!board.out_of_boundrie(right_l)) {
+		char right = board.get_char(right_l);
+		arround.push_back(Tile(right_l, right, index_of_father, (enum Moves)RIGHT, closed_list[index_of_father].h_value + 1));
+
+		if (!check_validity(*(arround.end() - 1), closed_list, board, RIGHT))
+			arround.erase(arround.end() - 1);
+	}
+	if (!board.out_of_boundrie(left_l)) {
+		char left = board.get_char(left_l);
+		arround.push_back(Tile(left_l, left, index_of_father, (enum Moves)LEFT, closed_list[index_of_father].h_value + 1));
+
+		if (!check_validity(*(arround.end() - 1), closed_list, board, LEFT))
+			arround.erase(arround.end() - 1);
+	}
+	
+	
 }
 //====================================================================================
 
 //check validity of a specific move
 bool check_validity(Tile curr_tile,
 					std::vector<Tile> closed_list,
-					Board & board,
+					const Board & board,
 					enum Moves move)
 {
 
@@ -183,7 +195,7 @@ bool check_validity(Tile curr_tile,
 		return false;
 
 	///if we reached player
-	if (curr_tile.m_value == '@')
+	if (curr_tile.m_value == '@' || curr_tile.m_value == 'S')
 		return true;
 
 	//if we are in a wall no need to check
@@ -197,26 +209,36 @@ bool check_validity(Tile curr_tile,
 
 	switch (move) {
 		case LEFT:
-			if (curr_tile.m_value == '#')
+			if (below == '-')
 				return false;
-
-			else if (below == ' ' && curr_tile.m_value != '-')
+			else if (curr_tile.m_value == '#')
+				return false;
+			else if (below == ' ' && curr_tile.m_value == '-')
+				return true;
+			else if (below == '-')
+				return false;
+			if (below == ' ')
 				return false;
 			return true;
 			break;
 
 		case RIGHT:
-			//if there is wall  to the right
-			if (curr_tile.m_value == '#')
+			if (below == '-')
 				return false;
-
-			else if (below == ' ' && curr_tile.m_value != '-') 
-					return false;
-			
+			else if (curr_tile.m_value == '#')
+				return false;
+			else if (below == ' ' && curr_tile.m_value == '-')
+				return true;
+			else if (below == '-')
+				return false;
+			if (below == ' ')
+				return false;
 			return true;
 			break;
 
 		case UP:
+			if (below == '-')
+				return false;
 			if (curr_tile.m_value == 'H' || (below == 'H' && curr_tile.m_value == ' ' ))
 				return true;
 

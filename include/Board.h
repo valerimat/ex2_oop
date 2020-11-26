@@ -17,10 +17,10 @@ public:
 	Board();
 
 	// get functions
-	int  get_height();
-	int  get_width();
+	int  get_height() const;
+	int  get_width() const;
 	char get_char(Location location) const;
-	char get_char(int row, int col);
+	char get_char(int row, int col)const ;
 	char get_clean_board_char(int row, int col);
 	void get_locations(std::vector<Monster> &, std::vector<Coins> &, Location &); // gets the location of the hero on the map
 	int  get_level();
@@ -28,7 +28,7 @@ public:
 	// board related functions
 	void clear_board();
 	void print_board();
-
+	bool out_of_boundrie(const Location& location) const;
 	
 
 	// level related functions
@@ -40,9 +40,10 @@ public:
 	void add_char(Location, char);
 	void replace_char(Location &location);
 	void delete_char(Location &);
-  char return_char_from_default(Location location) const;
+	char return_char_from_default(Location location) const;
 
 private:
+	
 	int curr_level;
 	std::vector <std::vector <std::string>> levels;
 	std::vector <std::vector <std::string>> levels_backup;

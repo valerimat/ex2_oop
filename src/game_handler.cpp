@@ -70,7 +70,11 @@ bool Game_Handler::move_player(int key)
 					m_board.replace_char(current_location); // inserts the original char back to place
 					current_location.update_based_on_key(key); // we get the new location based on the key
 					m_player.set_loctaion(current_location);
+					if(m_board.get_char(current_location) == 'H')
+						m_board.add_char(current_location, 'S');
+					else
 					m_board.add_char(current_location, '@');
+
 					return true;
 				}
 
@@ -258,12 +262,6 @@ void Game_Handler::move_enemies()
 				move_based_on_dirrection(NONE, m_monsters[index]);
 				continue;
 			}
-			
-			if (rand() % 8 == 1) {
-				random_move(m_monsters[index], m_monsters[index].get_next_path());
-				m_monsters[index].remove_first_in_path();
-				continue;
-			}
 				
 			move_based_on_dirrection(m_monsters[index].get_next_path(), m_monsters[index]);
 			m_monsters[index].remove_first_in_path();
@@ -271,53 +269,6 @@ void Game_Handler::move_enemies()
 		}
 
 };
-//----------------------------------------------------------------------------
-
-void Game_Handler::random_move(Monster& monster, int next_move) {
-	
-	Location monster_l = monster.get_location();
-
-	if(next_move == UP)
-		if(m_board.get_char(monster_l.row +1, monster_l.col) != '#')
-			move_based_on_dirrection(DOWN, monster);
-		else 
-			move_based_on_dirrection(rand()%2, monster);
-
-	else if (next_move == LEFT) {
-		if (m_board.get_char(monster_l.row + 1, monster_l.col) == 'H') {
-			if (rand() % 1 == 1)
-				move_based_on_dirrection(UP, monster);
-			else
-				move_based_on_dirrection(RIGHT, monster);
-		}
-		else {
-			if (m_board.get_char(monster_l.row, monster_l.col - 1) != '#')
-				move_based_on_dirrection(RIGHT, monster);
-			else
-				move_based_on_dirrection(LEFT, monster);
-		}
-	}
-
-	else if (next_move == RIGHT) {
-		if (m_board.get_char(monster_l.row + 1, monster_l.col) == 'H') {
-			if (rand() % 1 == 1)
-				move_based_on_dirrection(UP, monster);
-			else
-				move_based_on_dirrection(LEFT, monster);
-		}
-		else {
-			if (m_board.get_char(monster_l.row, monster_l.col + 1) != '#')
-				move_based_on_dirrection(LEFT, monster);
-			else
-				move_based_on_dirrection(RIGHT, monster);
-		}
-	}
-	else {
-		move_based_on_dirrection(next_move, monster);
-	}
-	
-}
-
 
 
 void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster)
@@ -325,7 +276,6 @@ void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster)
 	//we dont need to move
 
 	//returning char we previously deleted
-	m_board.add_char(monster.get_location(), monster.get_deleted_it());
 
 	//if x_axis
 	bool x_axis = true;
@@ -357,13 +307,21 @@ void Game_Handler::move_based_on_dirrection(int dirrection, Monster& monster)
 void Game_Handler::move_based_on_dirrection(bool x_axis, int direct, Monster & monster)
 {
 	
+
 	Location new_location(0, 0);
 
 	if (x_axis)
 		new_location = Location(monster.get_location().row, monster.get_location().col + direct);
 	else
 		new_location = Location(monster.get_location().row + direct, monster.get_location().col );
-	
+
+	//if we go out of boundries
+	if (m_board.out_of_boundrie(new_location))
+		return;
+
+	//returning char we prev deleted
+	m_board.add_char(monster.get_location(), monster.get_deleted_it());
+
 char check_if_there_is_monster = there_is_a_monster(new_location);
 	
 	if(check_if_there_is_monster!= '\0')
@@ -371,7 +329,7 @@ char check_if_there_is_monster = there_is_a_monster(new_location);
 	else
 		monster.set_deleted_it(m_board.get_char(new_location));
 
-	if (monster.get_deleted_it() == '@')
+	if (monster.get_deleted_it() == '@' || monster.get_deleted_it() == 'S')
 		die();
 
 	monster.relocate(new_location);

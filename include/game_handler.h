@@ -12,18 +12,7 @@
 #include "AlphaStar.h"
 #include "macros.h"
 
-//======enum section======
-enum nextStep
-{
-	Wall,
-	Coin,
-	Enemy,
-	Pole,
-	Ground,
-	NoGround,
-	Ladder,
-	NoGo
-};
+
 
 class Game_Handler
 {
@@ -39,7 +28,7 @@ public:
 	void move_based_on_dirrection(int dirrection, Monster& monster);
 	bool move_player(int key);
 	void move_enemies();
-	void random_move(Monster& monster, int);
+	//void random_move(Monster& monster, int);
 
 	//misc
 	void Run_game();

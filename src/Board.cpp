@@ -126,14 +126,14 @@ char Board::return_char_from_default(Location location) const {
 }
 
 // gets height
-int Board::get_height()
+int Board::get_height() const
 {
 	return levels[curr_level].size();
 }
 //----------------------------------------------------------------------------
 
 // gets width 
-int Board::get_width()
+int Board::get_width() const
 {
 	return levels[curr_level][0].size();
 }
@@ -146,7 +146,7 @@ char Board::get_char(Location location) const {
 //----------------------------------------------------------------------------
 
 // gets a specific char from the main board
-char Board::get_char(int row, int col)
+char Board::get_char(int row, int col) const
 {
 	return levels[curr_level][row][col];
 }
@@ -175,7 +175,7 @@ void Board::load_next_level()
 //----------------------------------------------------------------------------
 
 // prints the board
-void Board::print_board()
+void Board::print_board() 
 {
 	for (int i = 0; i < levels[curr_level].size(); i++)
 		std::cout << "     " << levels[curr_level][i] << std::endl;
@@ -227,8 +227,23 @@ void Board::increase_level()
 
 // checks if there are more levels
 bool Board::no_more_levels() {
-	if (curr_level +1 == levels.size())
+	if ((curr_level +1) == levels.size())
 		return true;
 	return false;
 }
 //----------------------------------------------------------------------------
+
+
+//check if curr locaiton out of board boundries
+bool Board::out_of_boundrie(const Location& location) const {
+	if (location.row <= 0)
+		return true;
+	else if (location.col > get_width())
+		return true;
+	else if (location.col < 0)
+		return true;
+	else if (location.row >= get_width())
+		return true;
+
+	return false;
+}
