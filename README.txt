@@ -95,3 +95,28 @@ _________A*:
 for enemy moves we use the A* algorithm for finding the shortes path to our player
 also we implement smartness to enemy - a random number that sets after how many player
 moves the algorith will calculate the path.
+
+The algorithm for finding path:
+1.we create two lists open and closed
+2.at first the open lists contaions our curr location (from where we want to move)
+3.we get all the possible moves around the moster
+
+4.we calculate theyr score:
+h_value= how far are they from the from position
+g_value = how far are they from the to position (with manhattan algorithm ( x + y))
+f_value = g + h.
+
+5.we add them to open list
+if a tile already in the open list we adjust theyr score and theyr father
+
+6.we find the tile with the best score in the open list and move it to the closed list
+if we have 2 tiles with same score we take the one recently added
+
+7.we check if we reached our player
+if yes we output a path based on the tile fathers (the tile it came form)
+if no we return to step 3 this time with the last tile in the closed list.
+
+
+enjoy the game :)
+
+
