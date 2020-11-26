@@ -47,7 +47,7 @@ Board::Board()
 			index++;
 		}
 		// Read the next line from File untill it reaches empty row.
-		while (index < stoi(size));
+		while (index <= stoi(size));
 
 		levels.push_back(m_vector_of_strings);
 		levels_backup.push_back(m_vector_of_strings);
@@ -178,7 +178,7 @@ void Board::load_next_level()
 void Board::print_board()
 {
 	for (int i = 0; i < levels[curr_level].size(); i++)
-		std::cout << levels[curr_level][i] << std::endl;
+		std::cout << "     " << levels[curr_level][i] << std::endl;
 }
 //----------------------------------------------------------------------------
 

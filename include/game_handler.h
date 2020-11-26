@@ -21,7 +21,8 @@ enum nextStep
 	Pole,
 	Ground,
 	NoGround,
-	Ladder
+	Ladder,
+	NoGo
 };
 
 class Game_Handler
