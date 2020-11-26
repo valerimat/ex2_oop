@@ -17,15 +17,13 @@ void Game_Handler::Run_game()
 	while (1) 
 	{
 		// prints the level bar
-		std::cout << "         LEVEL -  " << m_board.get_level() << std::endl;
+		std::cout << "           LEVEL - " << m_board.get_level() << std::endl;
 
 		//loads the level
 		m_board.print_board();
 
-		//prints the health and score bar
-		std::cout << "     health - "<<  m_player.get_lives()  <<" , score - " << m_player.get_score();
-
-		//fix to work with W,A,S,D
+		std::cout << "     lives - " << m_player.get_lives() <<
+					 ", score - " << m_player.get_score() << std::endl;
 
 		key = get_proper_key();
 
@@ -48,8 +46,7 @@ void Game_Handler::Run_game()
 
 			load_next_level();
 			continue;
-		}
-			
+		}		
 		move_enemies(); // move enemies
 
 		system("CLS"); // clears the screen
@@ -63,87 +60,90 @@ bool Game_Handler::move_player(int key)
 	enum nextStep next = what_is_there_ahead(key);
 	Location current_location = m_player.get_location(); // lets us hold the axis, where the player stands
 
-	if (m_board.get_char(current_location.row + 1, current_location.col) != ' ' ||
-		m_board.get_clean_board_char(current_location.row, current_location.col) == '-')
+	if (next != NoGo)
 	{
-		if(m_board.return_char_from_default(m_player.get_location()) == 'H')
-			if (key == KB_UP) {
-				m_board.replace_char(current_location); // inserts the original char back to place
-				current_location.update_based_on_key(key); // we get the new location based on the key
-				m_player.set_loctaion(current_location);
-				m_board.add_char(current_location, '@');
-				return true;
-			}
-
-		switch (next)
+		if (m_board.get_char(current_location.row + 1, current_location.col) != ' ' ||
+			m_board.get_clean_board_char(current_location.row, current_location.col) == '-')
 		{
-		case Wall: // #
-			m_board.add_char(current_location, '@');
-			return false;
+			if (m_board.return_char_from_default(m_player.get_location()) == 'H')
+				if (key == KB_UP) {
+					m_board.replace_char(current_location); // inserts the original char back to place
+					current_location.update_based_on_key(key); // we get the new location based on the key
+					m_player.set_loctaion(current_location);
+					m_board.add_char(current_location, '@');
+					return true;
+				}
 
-			break;
-
-		case Ladder: // H
-			m_board.replace_char(current_location);		// inserts the original char back to place
-			current_location.update_based_on_key(key);  // we get the new location based on the key
-			m_player.set_loctaion(current_location);	// sets the new location in the vector
-			m_board.add_char(current_location, 'S');	// inserts the player in the tile
-			break;
-
-		case Pole: // - 
-			if (key ==	KB_UP)
+			switch (next)
 			{
-				m_board.add_char(current_location, '@'); //cannot get above the pole
-			}
-			else
-			{
-				m_board.replace_char(current_location);		// inserts the original char back to place
-				current_location.update_based_on_key(key);  // we get the new location based on the key
-				m_player.set_loctaion(current_location);	// sets the new location in the vector
-				m_board.add_char(current_location, '@');	// inserts the player in the tile
-			}
-			break;
-
-		case Coin:
-			m_board.replace_char(current_location);		// inserts the original char back to place
-			current_location.update_based_on_key(key);  // we get the new location based on the key
-			m_player.set_loctaion(current_location);	// sets the new location in the vector
-			m_board.add_char(current_location, '@');	// inserts the player in the tile
-			//update score
-			m_player.increse_score(m_board.get_level());
-			//delete from vector
-			delete_coin_from_vector(m_player.get_location());
-			break;
-
-		case Enemy: // %
-			die();
-
-		default: // Ground
-			if (key == KB_UP)
-			{
+			case Wall: // #
 				m_board.add_char(current_location, '@');
-			}
-			else
-			{
+				return false;
+
+				break;
+
+			case Ladder: // H
+				m_board.replace_char(current_location);		// inserts the original char back to place
+				current_location.update_based_on_key(key);  // we get the new location based on the key
+				m_player.set_loctaion(current_location);	// sets the new location in the vector
+				m_board.add_char(current_location, 'S');	// inserts the player in the tile
+				break;
+
+			case Pole: // - 
+				if (key == KB_UP)
+				{
+					m_board.add_char(current_location, '@'); //cannot get above the pole
+				}
+				else
+				{
+					m_board.replace_char(current_location);		// inserts the original char back to place
+					current_location.update_based_on_key(key);  // we get the new location based on the key
+					m_player.set_loctaion(current_location);	// sets the new location in the vector
+					m_board.add_char(current_location, '@');	// inserts the player in the tile
+				}
+				break;
+
+			case Coin:
 				m_board.replace_char(current_location);		// inserts the original char back to place
 				current_location.update_based_on_key(key);  // we get the new location based on the key
 				m_player.set_loctaion(current_location);	// sets the new location in the vector
 				m_board.add_char(current_location, '@');	// inserts the player in the tile
+				//update score
+				m_player.increse_score(m_board.get_level());
+				//delete from vector
+				delete_coin_from_vector(m_player.get_location());
+				break;
+
+			case Enemy: // %
+				die();
+
+			default: // Ground
+				if (key == KB_UP)
+				{
+					m_board.add_char(current_location, '@');
+				}
+				else
+				{
+					m_board.replace_char(current_location);		// inserts the original char back to place
+					current_location.update_based_on_key(key);  // we get the new location based on the key
+					m_player.set_loctaion(current_location);	// sets the new location in the vector
+					m_board.add_char(current_location, '@');	// inserts the player in the tile
+				}
+				break;
 			}
-			break;
 		}
-	}
-	else
+		else
 
-	{
-		// free fall - nothing stops the player till he reaches ground beneath
-
-		while (m_board.get_char(current_location.row + 1, current_location.col) == ' ')
 		{
-			m_board.replace_char(current_location);		// inserts the original char back to place
-			current_location.update_based_on_key(KB_DOWN);  // 115 is down in the KB
-			m_player.set_loctaion(current_location);	// sets the new location in the vector
-			m_board.add_char(current_location, '@');	// inserts the player in the tile
+			// free fall - nothing stops the player till he reaches ground beneath
+
+			while (m_board.get_char(current_location.row + 1, current_location.col) == ' ')
+			{
+				m_board.replace_char(current_location);		// inserts the original char back to place
+				current_location.update_based_on_key(KB_DOWN);  // 115 is down in the KB
+				m_player.set_loctaion(current_location);	// sets the new location in the vector
+				m_board.add_char(current_location, '@');	// inserts the player in the tile
+			}
 		}
 	}
 	return true;
@@ -164,6 +164,10 @@ enum nextStep Game_Handler::what_is_there_ahead(int key)
 		current_location.col--;
 	if (key == KB_RIGHT) // right
 		current_location.col++;
+
+	if (current_location.row == -1 || current_location.row == m_board.get_height() -1 ||
+		current_location.col == -1 || current_location.col == m_board.get_width() - 1)
+		return NoGo;
 
 	current_letter = m_board.get_char(current_location);
 
@@ -398,8 +402,6 @@ char Game_Handler::there_is_a_monster(Location & location) {
 			index++;
 
 		return m_monsters[index].get_deleted_it();
-
-
 	}
 
 	return '\0';
