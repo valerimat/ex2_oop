@@ -32,7 +32,7 @@ std::vector<int> CalculatePath(Location& from, Location& to, Board& board);
 //helper functions - for full documentation visit cpp
 void get_around(const Tile& ,std::vector<Tile>& ,const std::vector<Tile>, Board&, int );
 
-bool check_validity(Tile, std::vector<Tile>,Board& , enum Moves );
+bool check_validity(Tile, std::vector<Tile>,const Board& , enum Moves );
 
 void calculate_score(std::vector<Tile>& ,const Location& ,int );
 
