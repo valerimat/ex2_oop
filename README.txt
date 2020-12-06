@@ -11,9 +11,7 @@
                                                             
 
 name: Valeri Materman
-id: 321133324
 name: David Yudin
-id: 321893257
 
 ===============================================================================
 In this exercise we were asked to implement Lode Runner inside the console with
